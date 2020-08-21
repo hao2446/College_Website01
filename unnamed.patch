@@ -1,0 +1,865 @@
+Index: CollegeWebsite01-web/src/main/resources/spring-config-mvc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-web/src/main/resources/spring-config-mvc.xml	(date 1597928488023)
++++ CollegeWebsite01-web/src/main/resources/spring-config-mvc.xml	(date 1597928488023)
+@@ -0,0 +1,26 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<beans xmlns="http://www.springframework.org/schema/beans"
++       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++       xmlns:context="http://www.springframework.org/schema/context"
++       xmlns:mvc="http://www.springframework.org/schema/mvc"
++       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
++       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
++        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
++
++    <context:component-scan base-package="cn.edu.swpu.info.college_website.web"/>
++    <!--视图解析器-->
++    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
++        <property name="prefix" value="/WEB-INF/pages/"></property>
++        <property name="suffix" value=".jsp"></property>
++    </bean>
++    <!--配置文件上传解析器  -->
++    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
++        <property name="defaultEncoding" value="utf-8"></property>
++        <property name="maxUploadSize" value="#{1024*1024*20}"></property>
++    </bean>
++
++    <!-- 扫静态资源 -->
++    <mvc:default-servlet-handler/>
++    <!-- 扫动态  -->
++    <mvc:annotation-driven></mvc:annotation-driven>
++</beans>
+\ No newline at end of file
+Index: CollegeWebsite01-web/src/main/resources/spring-config.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-web/src/main/resources/spring-config.xml	(date 1597925169046)
++++ CollegeWebsite01-web/src/main/resources/spring-config.xml	(date 1597925169046)
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<beans xmlns="http://www.springframework.org/schema/beans"
++       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
++
++    <import resource="classpath*:spring-config-dao.xml"/>
++    <import resource="classpath:spring-config-mvc.xml"/>
++    <import resource="classpath*:spring-config-services.xml"/>
++</beans>
+\ No newline at end of file
+Index: CollegeWebsite01-dao/src/main/resources/spring-config-dao.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-dao/src/main/resources/spring-config-dao.xml	(date 1597924586227)
++++ CollegeWebsite01-dao/src/main/resources/spring-config-dao.xml	(date 1597924586227)
+@@ -0,0 +1,36 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<beans xmlns="http://www.springframework.org/schema/beans"
++       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
++       xsi:schemaLocation=" http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
++       http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd
++       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
++
++    <context:component-scan base-package="cn.edu.swpu.info.college_website.dao"/>
++    <!--配置文件-->
++    <context:property-placeholder location="classpath:jdbc.properties"/>
++    <!--配置数据源-->
++    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
++        <property name="driverClass" value="${driver}"></property>
++        <property name="jdbcUrl" value="${url}"></property>
++        <property name="user" value="${user}"></property>
++        <property name="password" value="${password}"></property>
++        <property name="minPoolSize" value="${MaxPoolSize}"></property>
++        <property name="maxPoolSize" value="${minPoolSize}"></property>
++    </bean>
++    <!--配置事务管理器,控制数据源里面的连接与关闭-->
++    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
++        <property name="dataSource" ref="dataSource"></property>
++    </bean>
++    <!--可以根据配置文件找到SqlSessionFactoryBean-->
++    <bean id="sqlsessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
++        <property name="configLocation" value="classpath:mybaties.xml"></property>
++        <property name="dataSource" ref="dataSource"></property>
++        <!-- dao层xml配置文件-->
++        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
++    </bean>
++    <!--dao接口的实现加入到IOC容器中-->
++    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
++        <property name="basePackage" value="cn.edu.swpu.info.college_website.dao"></property>
++    </bean>
++</beans>
+\ No newline at end of file
+Index: CollegeWebsite01-domain/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-domain/pom.xml	(date 1597894885668)
++++ CollegeWebsite01-domain/pom.xml	(date 1597894885668)
+@@ -0,0 +1,31 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>College-Website01</artifactId>
++        <groupId>cn.edu.swpu.info</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>College-Website01-domain</artifactId>
++
++    <dependencies>
++        <dependency>
++            <groupId>com.alibaba</groupId>
++            <artifactId>fastjson</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-context-support</artifactId>
++        </dependency>
++
++        <dependency>
++            <groupId>oro</groupId>
++            <artifactId>oro</artifactId>
++            <version>2.0.7</version>
++        </dependency>
++    </dependencies>
++
++</project>
+\ No newline at end of file
+Index: CollegeWebsite01-web/src/main/webapp/WEB-INF/web.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-web/src/main/webapp/WEB-INF/web.xml	(date 1597969744693)
++++ CollegeWebsite01-web/src/main/webapp/WEB-INF/web.xml	(date 1597969744693)
+@@ -0,0 +1,59 @@
++<!DOCTYPE web-app PUBLIC
++ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
++ "http://java.sun.com/dtd/web-app_2_3.dtd"  >
++
++<web-app>
++  <display-name>Archetype Created Web Application</display-name>
++
++    <!--  两个标准配置-->
++    <!-- 字符编码 -->
++    <filter>
++        <filter-name>CharacterEncodingFilter</filter-name>
++        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
++        <init-param>
++            <param-name>encoding</param-name>
++            <param-value>utf-8</param-value>
++        </init-param>
++        <init-param>
++            <param-name>forceEncoding</param-name>
++            <param-value>true</param-value>
++        </init-param>
++    </filter>
++    <filter-mapping>
++        <filter-name>CharacterEncodingFilter</filter-name>
++        <url-pattern>/*</url-pattern>
++    </filter-mapping>
++    <!--配置spring容器启动-->
++    <context-param>
++        <param-name>contextConfigLocation</param-name>
++        <param-value>classpath:spring-config.xml</param-value>
++    </context-param>
++    <listener>
++        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
++    </listener>
++    <!---前端控制器-->
++    <servlet>
++        <servlet-name>springDispatcherServlet</servlet-name>
++        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
++        <init-param>
++            <param-name>contextConfigLocation</param-name>
++            <param-value>classpath:spring-config-mvc.xml</param-value>
++        </init-param>
++        <load-on-startup>1</load-on-startup>
++    </servlet>
++    <servlet-mapping>
++        <servlet-name>springDispatcherServlet</servlet-name>
++        <url-pattern>/</url-pattern>
++    </servlet-mapping>
++
++
++    <!-- 支持Rest风格的过滤器 -->
++    <filter>
++        <filter-name>HiddenHttpMethodFilter</filter-name>
++        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
++    </filter>
++    <filter-mapping>
++        <filter-name>HiddenHttpMethodFilter</filter-name>
++        <url-pattern>/*</url-pattern>
++    </filter-mapping>
++</web-app>
+\ No newline at end of file
+Index: CollegeWebsite01-dao/src/main/resources/jdbc.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>GBK
+===================================================================
+--- CollegeWebsite01-dao/src/main/resources/jdbc.properties	(date 1597911159228)
++++ CollegeWebsite01-dao/src/main/resources/jdbc.properties	(date 1597911159228)
+@@ -0,0 +1,6 @@
++driver=com.mysql.jdbc.Driver
++url=jdbc:mysql://localhost:3306/connection?characterEncoding=utf-8
++user=root
++password=root
++MaxPoolSize=20
++minPoolSize=10
+\ No newline at end of file
+Index: CollegeWebsite01-dao/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-dao/pom.xml	(date 1597912934085)
++++ CollegeWebsite01-dao/pom.xml	(date 1597912934085)
+@@ -0,0 +1,59 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>College-Website01</artifactId>
++        <groupId>cn.edu.swpu.info</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>College-Website01-dao</artifactId>
++
++    <dependencies>
++        <!-- MyBatis&JDBC -->
++        <dependency>
++            <groupId>org.mybatis</groupId>
++            <artifactId>mybatis</artifactId>
++            <version>3.2.1</version>
++        </dependency>
++        <dependency>
++            <groupId>org.mybatis</groupId>
++            <artifactId>mybatis-spring</artifactId>
++            <version>1.2.0</version>
++        </dependency>
++        <dependency>
++            <groupId>com.jolbox</groupId>
++            <artifactId>bonecp</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>mysql</groupId>
++            <artifactId>mysql-connector-java</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-jdbc</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>cn.edu.swpu.info</groupId>
++            <artifactId>College-Website01-domain</artifactId>
++            <version>${project.parent.version}</version>
++        </dependency>
++        <dependency>
++            <groupId>cn.edu.swpu.info</groupId>
++            <artifactId>College-Website01-common</artifactId>
++            <version>${project.parent.version}</version>
++        </dependency>
++        <!--数据库连接池配置-->
++        <!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
++        <dependency>
++            <groupId>com.mchange</groupId>
++            <artifactId>c3p0</artifactId>
++            <version>0.9.5.2</version>
++        </dependency>
++
++
++    </dependencies>
++
++</project>
+\ No newline at end of file
+Index: CollegeWebsite01-web/src/main/webapp/index.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-web/src/main/webapp/index.jsp	(date 1597891615624)
++++ CollegeWebsite01-web/src/main/webapp/index.jsp	(date 1597891615624)
+@@ -0,0 +1,5 @@
++<html>
++<body>
++<h2>Hello World!</h2>
++</body>
++</html>
+Index: CollegeWebsite01-web/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-web/pom.xml	(date 1597929923726)
++++ CollegeWebsite01-web/pom.xml	(date 1597929923726)
+@@ -0,0 +1,153 @@
++<?xml version="1.0" encoding="UTF-8"?>
++
++<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>College-Website01</artifactId>
++        <groupId>cn.edu.swpu.info</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>College-Website01-web</artifactId>
++    <packaging>war</packaging>
++
++    <name>College-Website01-web Maven Webapp</name>
++    <!-- FIXME change it to the project's website -->
++    <url>http://www.example.com</url>
++
++    <properties>
++        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++        <maven.compiler.source>1.7</maven.compiler.source>
++        <maven.compiler.target>1.7</maven.compiler.target>
++    </properties>
++
++
++    <dependencies>
++        <dependency>
++            <groupId>junit</groupId>
++            <artifactId>junit</artifactId>
++            <version>4.11</version>
++            <scope>test</scope>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-webmvc</artifactId>
++            <version>5.2.6.RELEASE</version>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-web</artifactId>
++            <version>5.2.6.RELEASE</version>
++        </dependency>
++
++        <!-- 单元测试 -->
++        <dependency>
++            <groupId>cn.edu.swpu.info</groupId>
++            <artifactId>College-Website01-domain</artifactId>
++            <version>${project.parent.version}</version>
++        </dependency>
++
++        <dependency>
++            <groupId>cn.edu.swpu.info</groupId>
++            <artifactId>College-Website01-common</artifactId>
++            <version>${project.parent.version}</version>
++            <exclusions>
++                <exclusion>
++                    <groupId>org.springframework</groupId>
++                    <artifactId>spring</artifactId>
++                </exclusion>
++            </exclusions>
++        </dependency>
++        <dependency>
++            <groupId>cn.edu.swpu.info</groupId>
++            <artifactId>College-Website01-services</artifactId>
++            <version>${project.parent.version}</version>
++        </dependency>
++
++        <dependency>
++            <groupId>cn.edu.swpu.info</groupId>
++            <artifactId>College-Website01-dao</artifactId>
++            <version>${project.parent.version}</version>
++        </dependency>
++        <dependency>
++            <groupId>com.fasterxml.jackson.core</groupId>
++            <artifactId>jackson-core</artifactId>
++            <version>2.9.2</version>
++        </dependency>
++
++        <dependency>
++            <groupId>com.fasterxml.jackson.core</groupId>
++            <artifactId>jackson-annotations</artifactId>
++            <version>2.9.2</version>
++        </dependency>
++
++        <dependency>
++            <groupId>com.fasterxml.jackson.core</groupId>
++            <artifactId>jackson-databind</artifactId>
++            <version>2.9.2</version>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-web</artifactId>
++            <version>5.2.8.RELEASE</version>
++            <scope>compile</scope>
++        </dependency>
++        <dependency>
++            <groupId>jstl</groupId>
++            <artifactId>jstl</artifactId>
++            <version>1.2</version>
++        </dependency>
++        <!--数据库连接池配置-->
++        <!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
++        <dependency>
++            <groupId>com.mchange</groupId>
++            <artifactId>c3p0</artifactId>
++            <version>0.9.5.2</version>
++        </dependency>
++
++    </dependencies>
++
++    <build>
++        <finalName>College-Website01-web</finalName>
++        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
++            <plugins>
++                <plugin>
++                    <artifactId>maven-clean-plugin</artifactId>
++                    <version>3.1.0</version>
++                </plugin>
++                <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
++                <plugin>
++                    <artifactId>maven-resources-plugin</artifactId>
++                    <version>3.0.2</version>
++                </plugin>
++                <plugin>
++                    <artifactId>maven-compiler-plugin</artifactId>
++                    <version>3.8.0</version>
++                </plugin>
++                <plugin>
++                    <artifactId>maven-surefire-plugin</artifactId>
++                    <version>2.22.1</version>
++                </plugin>
++                <plugin>
++                    <artifactId>maven-war-plugin</artifactId>
++                    <version>3.2.2</version>
++                </plugin>
++                <plugin>
++                    <artifactId>maven-install-plugin</artifactId>
++                    <version>2.5.2</version>
++                </plugin>
++                <plugin>
++                    <artifactId>maven-deploy-plugin</artifactId>
++                    <version>2.8.2</version>
++                </plugin>
++            </plugins>
++        </pluginManagement>
++        <resources>
++            <resource>
++                <directory>src/main/resources</directory>
++                <filtering>true</filtering>
++            </resource>
++        </resources>
++    </build>
++</project>
+Index: CollegeWebsite01-common/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-common/pom.xml	(date 1597891310063)
++++ CollegeWebsite01-common/pom.xml	(date 1597891310063)
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>College-Website01</artifactId>
++        <groupId>cn.edu.swpu.info</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>College-Website01-common</artifactId>
++
++
++</project>
+\ No newline at end of file
+Index: CollegeWebsite01-services/src/main/resources/spring-config-services.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-services/src/main/resources/spring-config-services.xml	(date 1597925080361)
++++ CollegeWebsite01-services/src/main/resources/spring-config-services.xml	(date 1597925080361)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<beans xmlns="http://www.springframework.org/schema/beans"
++       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++       xmlns:context="http://www.springframework.org/schema/context"
++       xmlns:tx="http://www.springframework.org/schema/tx"
++       xsi:schemaLocation=" http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
++        http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd
++       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
++       >
++
++    <context:component-scan base-package="cn.edu.swpu.info.college_website"/>
++    <tx:annotation-driven transaction-manager="transactionManager"/>
++</beans>
+\ No newline at end of file
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pom.xml	(date 1597892260592)
++++ pom.xml	(date 1597892260592)
+@@ -0,0 +1,247 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <modelVersion>4.0.0</modelVersion>
++
++    <groupId>cn.edu.swpu.info</groupId>
++    <artifactId>College-Website01</artifactId>
++    <packaging>pom</packaging>
++    <version>1.0-SNAPSHOT</version>
++    <modules>
++        <module>CollegeWebsite01-common</module>
++        <module>CollegeWebsite01-dao</module>
++        <module>CollegeWebsite01-domain</module>
++        <module>CollegeWebsite01-services</module>
++        <module>CollegeWebsite01-web</module>
++    </modules>
++
++    <properties>
++        <jdk.version>1.8</jdk.version>
++        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
++        <spring.version>5.2.6.RELEASE</spring.version>
++
++    </properties>
++
++    <dependencies>
++        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-context</artifactId>
++            <version>5.2.6.RELEASE</version>
++        </dependency>
++
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-jdbc</artifactId>
++            <version>${spring.version}</version>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-tx</artifactId>
++            <version>${spring.version}</version>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-webmvc</artifactId>
++            <version>${spring.version}</version>
++        </dependency>
++
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-context-support</artifactId>
++            <version>${spring.version}</version>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-expression</artifactId>
++            <version>${spring.version}</version>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-web</artifactId>
++            <version>${spring.version}</version>
++        </dependency>
++
++
++        <!-- LOG4J日志记录 -->
++        <dependency>
++            <groupId>org.slf4j</groupId>
++            <artifactId>slf4j-api</artifactId>
++            <version>1.6.4</version>
++        </dependency>
++        <dependency>
++            <groupId>org.slf4j</groupId>
++            <artifactId>slf4j-log4j12</artifactId>
++            <version>1.6.4</version>
++        </dependency>
++        <dependency>
++            <groupId>log4j</groupId>
++            <artifactId>log4j</artifactId>
++            <version>1.2.17</version>
++        </dependency>
++
++        <dependency>
++            <groupId>commons-lang</groupId>
++            <artifactId>commons-lang</artifactId>
++            <version>2.5</version>
++        </dependency>
++
++        <dependency>
++            <groupId>commons-codec</groupId>
++            <artifactId>commons-codec</artifactId>
++            <version>1.2</version>
++        </dependency>
++
++
++        <dependency>
++            <groupId>javax.servlet</groupId>
++            <artifactId>servlet-api</artifactId>
++            <version>2.4</version>
++            <scope>provided</scope>
++        </dependency>
++
++        <dependency>
++            <groupId>org.mybatis</groupId>
++            <artifactId>mybatis</artifactId>
++            <version>3.2.1</version>
++        </dependency>
++        <dependency>
++            <groupId>org.mybatis</groupId>
++            <artifactId>mybatis-spring</artifactId>
++            <version>1.2.0</version>
++        </dependency>
++
++        <dependency>
++            <groupId>com.jolbox</groupId>
++            <artifactId>bonecp</artifactId>
++            <version>0.8.0.RELEASE</version>
++        </dependency>
++
++        <dependency>
++            <groupId>mysql</groupId>
++            <artifactId>mysql-connector-java</artifactId>
++            <version>5.1.25</version>
++        </dependency>
++
++
++        <dependency>
++            <groupId>org.elasticsearch</groupId>
++            <artifactId>elasticsearch</artifactId>
++            <version>2.1.1</version>
++        </dependency>
++
++        <!-- JSON -->
++        <dependency>
++            <groupId>com.alibaba</groupId>
++            <artifactId>fastjson</artifactId>
++            <version>1.2.25</version>
++        </dependency>
++
++
++        <dependency>
++            <groupId>org.aspectj</groupId>
++            <artifactId>aspectjweaver</artifactId>
++            <version>1.7.2</version>
++        </dependency>
++        <dependency>
++            <groupId>cglib</groupId>
++            <artifactId>cglib-nodep</artifactId>
++            <version>2.1_3</version>
++        </dependency>
++        <dependency>
++            <groupId>commons-fileupload</groupId>
++            <artifactId>commons-fileupload</artifactId>
++            <version>1.3.2</version>
++        </dependency>
++
++        <!-- 单元测试 -->
++        <dependency>
++            <groupId>org.testng</groupId>
++            <artifactId>testng</artifactId>
++            <version>6.1.1</version>
++            <scope>test</scope>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-test</artifactId>
++            <version>${spring.version}</version>
++        </dependency>
++        <!-- if you use velocity view in springmvc -->
++        <dependency>
++            <groupId>org.apache.velocity</groupId>
++            <artifactId>velocity</artifactId>
++            <version>1.7</version>
++        </dependency>
++
++        <!-- if you use velocity layout view in springmvc -->
++        <dependency>
++            <groupId>org.apache.velocity</groupId>
++            <artifactId>velocity-tools</artifactId>
++            <version>2.0</version>
++
++        </dependency>
++
++
++
++        <dependency>
++            <groupId>pinyin4j</groupId>
++            <artifactId>pinyin4j</artifactId>
++            <version>2.5</version>
++        </dependency>
++        <dependency>
++            <groupId>org.hibernate</groupId>
++            <artifactId>hibernate-validator</artifactId>
++            <version>5.2.4.Final</version>
++        </dependency>
++    </dependencies>
++
++    <!-- 插件管理 -->
++    <build>
++        <finalName>college_website-web</finalName>
++        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
++            <plugins>
++                <plugin>
++                    <artifactId>maven-clean-plugin</artifactId>
++                    <version>3.1.0</version>
++                </plugin>
++                <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
++                <plugin>
++                    <artifactId>maven-resources-plugin</artifactId>
++                    <version>3.0.2</version>
++                </plugin>
++                <plugin>
++                    <artifactId>maven-compiler-plugin</artifactId>
++                    <version>3.8.0</version>
++                    <configuration>
++                        <source>1.8</source>
++                        <target>1.8</target>
++                        <encoding>utf8</encoding>
++                    </configuration>
++                </plugin>
++                <!-- 配置构建时忽略测试用例 -->
++                <plugin>
++                    <artifactId>maven-surefire-plugin</artifactId>
++                    <configuration>
++                        <skipTests>true</skipTests>
++                    </configuration>
++                    <version>2.22.1</version>
++                </plugin>
++                <plugin>
++                    <artifactId>maven-war-plugin</artifactId>
++                    <version>3.2.2</version>
++                </plugin>
++                <plugin>
++                    <artifactId>maven-install-plugin</artifactId>
++                    <version>2.5.2</version>
++                </plugin>
++                <plugin>
++                    <artifactId>maven-deploy-plugin</artifactId>
++                    <version>2.8.2</version>
++                </plugin>
++            </plugins>
++        </pluginManagement>
++    </build>
++
++</project>
+\ No newline at end of file
+Index: CollegeWebsite01-dao/src/main/resources/mybaties.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-dao/src/main/resources/mybaties.xml	(date 1597913796620)
++++ CollegeWebsite01-dao/src/main/resources/mybaties.xml	(date 1597913796620)
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8" ?>
++<!DOCTYPE configuration
++        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
++        "http://mybatis.org/dtd/mybatis-3-config.dtd">
++<configuration >
++
++</configuration>
+\ No newline at end of file
+Index: College-Website01.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- College-Website01.iml	(date 1597891183383)
++++ College-Website01.iml	(date 1597891183383)
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4" />
+\ No newline at end of file
+Index: CollegeWebsite01-services/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CollegeWebsite01-services/pom.xml	(date 1597894832016)
++++ CollegeWebsite01-services/pom.xml	(date 1597894832016)
+@@ -0,0 +1,64 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>College-Website01</artifactId>
++        <groupId>cn.edu.swpu.info</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>College-Website01-services</artifactId>
++
++    <dependencies>
++        <dependency>
++            <groupId>cn.edu.swpu.info</groupId>
++            <artifactId>College-Website01-domain</artifactId>
++            <version>${project.parent.version}</version>
++        </dependency>
++        <dependency>
++            <groupId>cn.edu.swpu.info</groupId>
++            <artifactId>College-Website01-common</artifactId>
++            <version>${project.parent.version}</version>
++        </dependency>
++        <dependency>
++            <groupId>cn.edu.swpu.info</groupId>
++            <artifactId>College-Website01-dao</artifactId>
++            <version>${project.parent.version}</version>
++        </dependency>
++
++        <!--<dependency>-->
++        <!--<groupId>org.testng</groupId>-->
++        <!--<artifactId>testng</artifactId>-->
++        <!--<scope>test</scope>-->
++        <!--</dependency>-->
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-test</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.quartz-scheduler</groupId>
++            <artifactId>quartz</artifactId>
++            <version>1.8.6</version>
++        </dependency>
++        <!--<dependency>-->
++        <!--<groupId>org.elasticsearch</groupId>-->
++        <!--<artifactId>elasticsearch</artifactId>-->
++
++        <!--</dependency>-->
++
++        <dependency>
++            <groupId>commons-collections</groupId>
++            <artifactId>commons-collections</artifactId>
++            <version>3.2.1</version>
++        </dependency>
++
++        <!--<dependency>-->
++        <!--<groupId>net.sf.json-lib</groupId>-->
++        <!--<artifactId>json-lib</artifactId>-->
++        <!--<version>2.4</version>-->
++        <!--</dependency>-->
++    </dependencies>
++
++</project>
+\ No newline at end of file
