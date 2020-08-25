@@ -3,90 +3,68 @@ package cn.edu.swpu.info;
 import java.util.Date;
 
 public class Message {
-    /**
-     * 新闻编号
-     */
-    private Integer messageId;
-    /**
-     * 新闻标题
-     */
-    private String messageTitle;
-    /**
-     * 新闻类型
-     */
-    private Integer messageType;
-    /**
-     * 新闻内容
-     */
-    private String messageContent;
-    /**
-     * 新闻图片地址
-     */
-    private String messageImag;
-    /**
-     * 新闻审核日期
-     */
-    private Date createDate;
-    private Date modifyDate;
-    /**
-     * 新闻审核状态
-     */
+    private Integer messageid;
+
+    private String messagetitle;
+
+    private Integer messagetype;
+
+    private String messageimag;
+
+    private Date createdate;
+
+    private Date modifydate;
+
     private Integer status;
 
-    public Integer getMessageId() {
-        return messageId;
+    private String messagecontent;
+
+    public Integer getMessageid() {
+        return messageid;
     }
 
-    public void setMessageId(Integer messageId) {
-        this.messageId = messageId;
+    public void setMessageid(Integer messageid) {
+        this.messageid = messageid;
     }
 
-    public String getMessageTitle() {
-        return messageTitle;
+    public String getMessagetitle() {
+        return messagetitle;
     }
 
-    public void setMessageTitle(String messageTitle) {
-        this.messageTitle = messageTitle;
+    public void setMessagetitle(String messagetitle) {
+        this.messagetitle = messagetitle == null ? null : messagetitle.trim();
     }
 
-    public Integer getMessageType() {
-        return messageType;
+    public Integer getMessagetype() {
+        return messagetype;
     }
 
-    public void setMessageType(Integer messageType) {
-        this.messageType = messageType;
+    public void setMessagetype(Integer messagetype) {
+        this.messagetype = messagetype;
     }
 
-    public String getMessageContent() {
-        return messageContent;
+    public String getMessageimag() {
+        return messageimag;
     }
 
-    public void setMessageContent(String messageContent) {
-        this.messageContent = messageContent;
+    public void setMessageimag(String messageimag) {
+        this.messageimag = messageimag == null ? null : messageimag.trim();
     }
 
-    public String getMessageImag() {
-        return messageImag;
+    public Date getCreatedate() {
+        return createdate;
     }
 
-    public void setMessageImag(String messageImag) {
-        this.messageImag = messageImag;
+    public void setCreatedate(Date createdate) {
+        this.createdate = createdate;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getModifydate() {
+        return modifydate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getModifyDate() {
-        return modifyDate;
-    }
-
-    public void setModifyDate(Date modifyDate) {
-        this.modifyDate = modifyDate;
+    public void setModifydate(Date modifydate) {
+        this.modifydate = modifydate;
     }
 
     public Integer getStatus() {
@@ -97,17 +75,25 @@ public class Message {
         this.status = status;
     }
 
+    public String getMessagecontent() {
+        return messagecontent;
+    }
+
+    public void setMessagecontent(String messagecontent) {
+        this.messagecontent = messagecontent == null ? null : messagecontent.trim();
+    }
+
     @Override
     public String toString() {
         return "Message{" +
-                "messageId=" + messageId +
-                ", messageTitle='" + messageTitle + '\'' +
-                ", messageType=" + messageType +
-                ", messageContent='" + messageContent + '\'' +
-                ", messageImag='" + messageImag + '\'' +
-                ", createDate=" + createDate +
-                ", modifyDate=" + modifyDate +
+                "messageid=" + messageid +
+                ", messagetitle='" + messagetitle + '\'' +
+                ", messagetype=" + messagetype +
+                ", messageimag='" + messageimag + '\'' +
+                ", createdate=" + createdate +
+                ", modifydate=" + modifydate +
                 ", status=" + status +
+                ", messagecontent='" + messagecontent + '\'' +
                 '}';
     }
 }
