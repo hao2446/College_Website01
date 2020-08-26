@@ -45,4 +45,11 @@ public interface BaseDao<T,Key extends Serializable> {
      * @return
      */
    List<T> selectObjectListbyKey(Key... key);
+
+    /**
+     * 查询最大的messageid
+     *
+     * @return
+     */
+   int selectMaxId();
 }

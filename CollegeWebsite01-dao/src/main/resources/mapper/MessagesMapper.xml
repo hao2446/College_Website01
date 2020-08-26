@@ -174,7 +174,7 @@
   </insert>
 
     <!--根据传入的参数，进行选择性的插入内容，参数类型是Meaasge-->
-  <insert id="insertObject" parameterType="cn.edu.swpu.info.Message">
+  <insert id="insertObject" parameterType="cn.edu.swpu.info.Message" useGeneratedKeys="true" keyProperty="messageId">
     insert into message
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="messageid != null">
@@ -231,11 +231,8 @@
   </insert>
 
     <!--查询信息总数-->
-  <select id="countByExample" parameterType="cn.edu.swpu.info.Message" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="cn.edu.swpu.info.Message" resultType="java.lang.Integer">
     select count(*) from message
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
   </select>
 
     <!--更新-->

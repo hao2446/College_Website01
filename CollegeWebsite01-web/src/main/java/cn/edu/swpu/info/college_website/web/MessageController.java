@@ -5,9 +5,7 @@ import cn.edu.swpu.info.college_website.services.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -52,9 +50,24 @@ public class MessageController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/FirstPageResource")
+    @RequestMapping(value = "/FirstPageResource" )
     public List<Message> getFirstPage(){
         List<Message> list= messageServiceImpl.getFirstPage();
         return list;
+    }
+
+    /**
+     * 添加新闻
+     * 根据后端先行查询总的记录数来确定插入时的主键
+     * @param message
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/insertMessage",method = RequestMethod.POST)
+    public String insertMessage( Message message,Model model){
+        message.setMessageid(messageServiceImpl.getMaxId()+1);
+        String msg=messageServiceImpl.addMessage(message);
+        model.addAttribute("msg",msg);
+        return "get";
     }
 }

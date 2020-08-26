@@ -12,7 +12,7 @@ public abstract class BaseDaoImpl<T,Key extends Serializable> extends Mybaties i
     private  final  static String DEFAULT_UPDATE_Contion="updateContion";
     private  final static String DEFAULT_SELECT_Contion="selectObjectList";
     private static final String DEFAULT_SELECT_KEY = "selectOneByKey";
-    //private static final String DEFAULT_SELECT_ARRY_KEY="selec"
+    private static final String DEFAULT_SELECT_Max_Id="countByExample";
    /**
      * 获取命名前缀
      * @param statement
@@ -72,5 +72,8 @@ public abstract class BaseDaoImpl<T,Key extends Serializable> extends Mybaties i
             return list;
         }
         return null;
+    }
+    public int selectMaxId(){
+        return this.select(getNameSpace(DEFAULT_SELECT_Max_Id));
     }
 }

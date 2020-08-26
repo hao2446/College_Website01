@@ -81,6 +81,16 @@ abstract class Mybaties {
         }
         return t;
     }
+    protected Integer select(String statement){
+        int t=0;
+        try{
+            SqlSession sqlSession=sqlSessionFactory.openSession();
+            t=sqlSession.selectOne(statement);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return t;
+    }
 
     /**
      * 查询列表

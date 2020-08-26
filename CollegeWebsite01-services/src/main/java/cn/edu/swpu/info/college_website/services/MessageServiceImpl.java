@@ -5,6 +5,7 @@ import cn.edu.swpu.info.college_website.dao.Impl.MessageDaoImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,36 +31,44 @@ public class MessageServiceImpl {
     }
 
     /**
+     * 获取最大的id
+     * @return
+     */
+    public Integer getMaxId(){
+        return messageDaoImpl.selectMaxId();
+    }
+
+    /**
      * 返回在加载首页时，所需要的数据
      * @return
      */
     public List<Message> getFirstPage(){
-        List<Message> messageList=null;
-        messageList=messageDaoImpl.selectObiectList(new Message());
+        List<Message> messageList=messageDaoImpl.selectObiectList(new Message());
+        List<Message> list=new ArrayList<>();
         int a=0,b=0,c=0,d=0,e=0;
         for (Message message: messageList) {
             if (message.getMessagetype()==1 && a<=6){
-                messageList.add(message);
+                list.add(message);
                 a++;
             }
             if (message.getMessagetype()==2 && b<=6){
-                messageList.add(message);
+                list.add(message);
                 b++;
             }
             if (message.getMessagetype()==3 && c<=6){
-                messageList.add(message);
+                list.add(message);
                 c++;
             }
             if (message.getMessagetype()==4 && d<=6){
-                messageList.add(message);
+                list.add(message);
                 d++;
             }if (message.getMessagetype()==5 && e<=6){
-                messageList.add(message);
+                list.add(message);
                 e++;
             }
 
         }
-        return  messageList;
+        return  list;
     }
 
     /**
