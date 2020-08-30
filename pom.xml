@@ -168,28 +168,28 @@
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <!-- if you use velocity view in springmvc -->
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.7</version>
-        </dependency>
+        <!--&lt;!&ndash; if you use velocity view in springmvc &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.velocity</groupId>-->
+            <!--<artifactId>velocity</artifactId>-->
+            <!--<version>1.7</version>-->
+        <!--</dependency>-->
 
-        <!-- if you use velocity layout view in springmvc -->
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-tools</artifactId>
-            <version>2.0</version>
+        <!--&lt;!&ndash; if you use velocity layout view in springmvc &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.velocity</groupId>-->
+            <!--<artifactId>velocity-tools</artifactId>-->
+            <!--<version>2.0</version>-->
 
-        </dependency>
+        <!--</dependency>-->
 
 
 
-        <dependency>
-            <groupId>pinyin4j</groupId>
-            <artifactId>pinyin4j</artifactId>
-            <version>2.5</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>pinyin4j</groupId>-->
+            <!--<artifactId>pinyin4j</artifactId>-->
+            <!--<version>2.5</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>

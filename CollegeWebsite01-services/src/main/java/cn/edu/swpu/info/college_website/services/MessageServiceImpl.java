@@ -85,4 +85,22 @@ public class MessageServiceImpl {
         }
         return  msg;
     }
+
+    /**
+     * 根据前端提供的messageid数组进行删除
+     * @param id
+     * @return
+     */
+    public int deleteMessage(List<Integer> id){
+        return  messageDaoImpl.deleteObjectByKey(id);
+    }
+
+    /**
+     * 更新新闻
+     * @param message
+     * @return
+     */
+    public int updateMessage(Message message){
+        return messageDaoImpl.updateObject(message);
+    }
 }

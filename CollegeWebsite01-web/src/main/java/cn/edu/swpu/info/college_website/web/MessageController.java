@@ -1,19 +1,29 @@
 package cn.edu.swpu.info.college_website.web;
 
 import cn.edu.swpu.info.Message;
+import cn.edu.swpu.info.ResponseMessage;
+import cn.edu.swpu.info.college_website.common.showPictureImpl;
 import cn.edu.swpu.info.college_website.services.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
+
 
 @RequestMapping("/message")
 @Controller
 public class MessageController {
     @Autowired
     MessageServiceImpl messageServiceImpl;
+    @Autowired
+    showPictureImpl showPictures;
 
     /**
      * 根据前端传入的Messageid
@@ -60,14 +70,64 @@ public class MessageController {
      * 添加新闻
      * 根据后端先行查询总的记录数来确定插入时的主键
      * @param message
-     * @param model
      * @return
      */
     @RequestMapping(value = "/insertMessage",method = RequestMethod.POST)
-    public String insertMessage( Message message,Model model){
-        message.setMessageid(messageServiceImpl.getMaxId()+1);
-        String msg=messageServiceImpl.addMessage(message);
-        model.addAttribute("msg",msg);
+    @ResponseBody
+    public ResponseMessage<String> insertMessage(@RequestBody String message) throws IOException {
+        System.out.println(message.toString());
+       // message.setMessageid(messageServiceImpl.getMaxId()+1);
+        //String msg=messageServiceImpl.addMessage(message);
+       // model.addAttribute("msg",msg);
+//        model.addAttribute("image",multipartFile.getOriginalFilename());
+        ResponseMessage<String> responseMessage = new ResponseMessage<>();
+        responseMessage.setCode(1000);
+        responseMessage.setMsg("success");
+        return responseMessage;
+    }
+
+    /**
+     * 上传图片
+     * 返回图片的url
+     * @return
+     */
+    @RequestMapping(value = "/uploadImg",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessage<String> uploadImg(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        System.out.println(multipartFile.getName());
+        System.out.println(multipartFile.getOriginalFilename());
+        String path="D:\\Users\\lenovo\\Desktop\\CollegeWebsite01\\file\\img\\"+multipartFile.getOriginalFilename();
+        multipartFile.transferTo(new File(path));
+//        message.setMessageimag(path);
+        // message.setMessageid(messageServiceImpl.getMaxId()+1);
+        //String msg=messageServiceImpl.addMessage(message);
+        // model.addAttribute("msg",msg);
+//        model.addAttribute("image",multipartFile.getOriginalFilename());
+        ResponseMessage<String> responseMessage = new ResponseMessage<>();
+        responseMessage.setCode(1000);
+        responseMessage.setData("/message/show/"+multipartFile.getOriginalFilename());
+        responseMessage.setMsg("success");
+        return responseMessage;
+    }
+
+    /**
+     * 删除新闻
+     * 根据前端提供的messageid数组进行删除操作
+     * @param messageid
+     * @return
+     */
+    @RequestMapping(value = "/deleteMessages")
+    public String deleteMessages(@RequestBody List<Integer> messageid){
+        int result=0;
+        result= messageServiceImpl.deleteMessage(messageid);
         return "get";
     }
+    @RequestMapping("/show/{filename}.{suffix}")
+    public void showPicture(@PathVariable("filename") String filename,
+                            @PathVariable("suffix") String suffix,
+                            HttpServletResponse response) throws IOException {
+        File imagefile=new File("D:\\Users\\lenovo\\Desktop\\CollegeWebsite01\\file\\img\\"+filename+"."+suffix);
+        showPictures.responseFile(response,imagefile);
+    }
+
 }
