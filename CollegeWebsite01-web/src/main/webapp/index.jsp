@@ -18,11 +18,13 @@
     pageContext.setAttribute("ctp",request.getContextPath());
 %>
 <body>
-<form action="${ctp}/message/insertMessage" method="post">
+<form action="${ctp}/message/insertMessage" method="post" enctype="multipart/form-data">
     新闻名称：<input type="text" name="messagetitle"><br>
     新闻类型：<input type="text" name="messagetype"><br>
+    上传图片：<input type="file" name="uploadImage"><br>
     新闻内容：<input type="text" name="messagecontent"><br>
     提交：<input type="submit" value="添加新闻">
 </form>
+<img src="http://localhost:8080/image/imagepsb.jpg" width="500" height="500">
 </body>
 </html>

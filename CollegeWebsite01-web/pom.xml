@@ -106,6 +106,14 @@
             <version>0.9.5.2</version>
         </dependency>
 
+        <!--跨域配置-->
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+            <version>2.5</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
