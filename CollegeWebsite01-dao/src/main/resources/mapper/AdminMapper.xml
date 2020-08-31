@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.swpu.info.college_website.dao.AdminDaoImpl">
+  <!--根据主键进行全属性查询，并封装-->
+  <select id="selectOneByKey"  resultType="cn.edu.swpu.info.admin">
+    select * from admin
+    where loginName = #{loginName}
+  </select>
+
+
+</mapper>

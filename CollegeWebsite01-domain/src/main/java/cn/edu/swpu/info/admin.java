@@ -1,10 +1,10 @@
 package cn.edu.swpu.info;
 
 public class admin {
-    /**
-     * 管理员Id
-     */
-    private Integer adminId;
+//    /**
+//     * 管理员Id
+//     */
+//    private Integer adminId;
     /**
      * 管理员登录名
      */
@@ -18,13 +18,13 @@ public class admin {
      */
     private Integer adminPermissions;
 
-    public Integer getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(Integer adminId) {
-        this.adminId = adminId;
-    }
+//    public Integer getAdminId() {
+//        return adminId;
+//    }
+//
+//    public void setAdminId(Integer adminId) {
+//        this.adminId = adminId;
+//    }
 
     public String getLoginName() {
         return loginName;
@@ -53,8 +53,7 @@ public class admin {
     @Override
     public String toString() {
         return "admin{" +
-                "adminId=" + adminId +
-                ", loginName='" + loginName + '\'' +
+                " loginName='" + loginName + '\'' +
                 ", adminPassword='" + adminPassword + '\'' +
                 ", adminPermissions=" + adminPermissions +
                 '}';
