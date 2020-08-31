@@ -3,21 +3,24 @@ package cn.edu.swpu.info;
 import java.util.Date;
 
 public class Message {
+
     private Integer messageid;
 
     private String messagetitle;
 
     private Integer messagetype;
 
-    private String messageimag;
+    private String messagecontent;
+
+    private String autor;
+
+    private String data;
 
     private Date createdate;
 
     private Date modifydate;
 
     private Integer status;
-
-    private String messagecontent;
 
     public Integer getMessageid() {
         return messageid;
@@ -32,7 +35,7 @@ public class Message {
     }
 
     public void setMessagetitle(String messagetitle) {
-        this.messagetitle = messagetitle == null ? null : messagetitle.trim();
+        this.messagetitle = messagetitle;
     }
 
     public Integer getMessagetype() {
@@ -43,12 +46,28 @@ public class Message {
         this.messagetype = messagetype;
     }
 
-    public String getMessageimag() {
-        return messageimag;
+    public String getMessagecontent() {
+        return messagecontent;
     }
 
-    public void setMessageimag(String messageimag) {
-        this.messageimag = messageimag == null ? null : messageimag.trim();
+    public void setMessagecontent(String messagecontent) {
+        this.messagecontent = messagecontent;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     public Date getCreatedate() {
@@ -73,27 +92,5 @@ public class Message {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getMessagecontent() {
-        return messagecontent;
-    }
-
-    public void setMessagecontent(String messagecontent) {
-        this.messagecontent = messagecontent == null ? null : messagecontent.trim();
-    }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "messageid=" + messageid +
-                ", messagetitle='" + messagetitle + '\'' +
-                ", messagetype=" + messagetype +
-                ", messageimag='" + messageimag + '\'' +
-                ", createdate=" + createdate +
-                ", modifydate=" + modifydate +
-                ", status=" + status +
-                ", messagecontent='" + messagecontent + '\'' +
-                '}';
     }
 }

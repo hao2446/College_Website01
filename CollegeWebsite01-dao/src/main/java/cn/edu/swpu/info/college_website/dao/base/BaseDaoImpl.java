@@ -41,9 +41,8 @@ public abstract class BaseDaoImpl<T,Key extends Serializable> extends Mybaties i
     }
 
     @Override
-    public int deleteObjectByKey(Key key) {
-
-        return this.delete(getNameSpace(DEFAULT_DELETE_Key),key);
+    public int deleteObjectByKey(List<Key> keys ) {
+        return this.delete(getNameSpace(DEFAULT_DELETE_Key),keys);
     }
 
     @Override
