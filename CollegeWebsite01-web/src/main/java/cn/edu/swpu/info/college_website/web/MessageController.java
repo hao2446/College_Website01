@@ -1,7 +1,7 @@
 package cn.edu.swpu.info.college_website.web;
 
-import cn.edu.swpu.info.Message;
 import cn.edu.swpu.info.ResponseMessage;
+import cn.edu.swpu.info.college_website.common.savePicture;
 import cn.edu.swpu.info.college_website.common.showPictureImpl;
 import cn.edu.swpu.info.college_website.services.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 
 
@@ -74,15 +73,15 @@ public class MessageController {
      */
     @RequestMapping(value = "/insertMessage",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseMessage<String> insertMessage(@RequestBody String message) throws IOException {
+    public ResponseMessage<String> insertMessage(@RequestBody Message message) throws IOException {
         System.out.println(message.toString());
        // message.setMessageid(messageServiceImpl.getMaxId()+1);
-        //String msg=messageServiceImpl.addMessage(message);
+        String msg=messageServiceImpl.addMessage(message);
        // model.addAttribute("msg",msg);
 //        model.addAttribute("image",multipartFile.getOriginalFilename());
         ResponseMessage<String> responseMessage = new ResponseMessage<>();
         responseMessage.setCode(1000);
-        responseMessage.setMsg("success");
+        responseMessage.setMsg(msg);
         return responseMessage;
     }
 
@@ -94,10 +93,11 @@ public class MessageController {
     @RequestMapping(value = "/uploadImg",method = RequestMethod.POST)
     @ResponseBody
     public ResponseMessage<String> uploadImg(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        System.out.println(multipartFile.getName());
-        System.out.println(multipartFile.getOriginalFilename());
-        String path="D:\\Users\\lenovo\\Desktop\\CollegeWebsite01\\file\\img\\"+multipartFile.getOriginalFilename();
-        multipartFile.transferTo(new File(path));
+        String path= savePicture.uploadPicture(multipartFile);
+        System.out.println(path);
+//        System.out.println(multipartFile.getOriginalFilename());
+//        String path= picturePath.path+multipartFile.getOriginalFilename();
+//        multipartFile.transferTo(new File(path));
 //        message.setMessageimag(path);
         // message.setMessageid(messageServiceImpl.getMaxId()+1);
         //String msg=messageServiceImpl.addMessage(message);
@@ -105,7 +105,7 @@ public class MessageController {
 //        model.addAttribute("image",multipartFile.getOriginalFilename());
         ResponseMessage<String> responseMessage = new ResponseMessage<>();
         responseMessage.setCode(1000);
-        responseMessage.setData("/message/show/"+multipartFile.getOriginalFilename());
+        responseMessage.setData("/message/show/"+path);
         responseMessage.setMsg("success");
         return responseMessage;
     }

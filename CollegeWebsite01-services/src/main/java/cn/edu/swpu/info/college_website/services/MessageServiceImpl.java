@@ -1,6 +1,6 @@
 package cn.edu.swpu.info.college_website.services;
 
-import cn.edu.swpu.info.Message;
+import cn.edu.swpu.info.college_website.common.Datetool;
 import cn.edu.swpu.info.college_website.dao.Impl.MessageDaoImpl;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +78,8 @@ public class MessageServiceImpl {
      */
     public String addMessage(Message message){
         String msg=null;
+        message.setCreatedate(Datetool.format());
+        message.setMessageid(getMaxId()+1);
         if (messageDaoImpl.insertObject(message)==1){
             msg="添加成功";
         }else {

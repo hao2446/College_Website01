@@ -7,7 +7,7 @@
     <result column="messageTitle" jdbcType="VARCHAR" property="messagetitle" />
     <result column="messageType" jdbcType="INTEGER" property="messagetype" />
     <result column="messageImag" jdbcType="VARCHAR" property="messageimag" />
-    <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createDate" jdbcType="VARCHAR" property="createdate" />
     <result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
@@ -123,7 +123,7 @@
         #{messageimag,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null">
-        #{createdate,jdbcType=TIMESTAMP},
+        #{createdate,jdbcType=VARCHAR},
       </if>
       <if test="modifydate != null">
         #{modifydate,jdbcType=TIMESTAMP},
@@ -155,7 +155,7 @@
         messageImag = #{messageimag,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null">
-        createDate = #{createdate,jdbcType=TIMESTAMP},
+        createDate = #{createdate,jdbcType=VARCHAR},
       </if>
       <if test="modifydate != null">
         modifyDate = #{modifydate,jdbcType=TIMESTAMP},
