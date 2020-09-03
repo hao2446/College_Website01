@@ -11,6 +11,7 @@ public class showPictureImpl implements showPicture {
     public void responseFile(HttpServletResponse response, File imageFile) throws IOException {
        InputStream in=new FileInputStream(imageFile);
         OutputStream out=response.getOutputStream();
+        System.out.println("运行了");
         byte [] buffer = new byte[1024];
         int len=0;
         while((len = in.read(buffer)) > 0){

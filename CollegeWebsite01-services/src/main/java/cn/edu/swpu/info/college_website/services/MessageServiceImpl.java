@@ -1,5 +1,6 @@
 package cn.edu.swpu.info.college_website.services;
 
+import cn.edu.swpu.info.Message;
 import cn.edu.swpu.info.college_website.common.Datetool;
 import cn.edu.swpu.info.college_website.dao.Impl.MessageDaoImpl;
 import org.springframework.stereotype.Service;
@@ -47,22 +48,22 @@ public class MessageServiceImpl {
         List<Message> list=new ArrayList<>();
         int a=0,b=0,c=0,d=0,e=0;
         for (Message message: messageList) {
-            if (message.getMessagetype()==1 && a<=6){
+            if (message.getMessagetype().equals("学院新闻") && a<=6){
                 list.add(message);
                 a++;
             }
-            if (message.getMessagetype()==2 && b<=6){
+            if (message.getMessagetype().equals("通知公告") && b<=6){
                 list.add(message);
                 b++;
             }
-            if (message.getMessagetype()==3 && c<=6){
+            if (message.getMessagetype().equals("学子风采") && c<=6){
                 list.add(message);
                 c++;
             }
-            if (message.getMessagetype()==4 && d<=6){
+            if (message.getMessagetype().equals("教育教学") && d<=6){
                 list.add(message);
                 d++;
-            }if (message.getMessagetype()==5 && e<=6){
+            }if (message.getMessagetype().equals("招生就业") && e<=6){
                 list.add(message);
                 e++;
             }
@@ -93,7 +94,7 @@ public class MessageServiceImpl {
      * @param id
      * @return
      */
-    public int deleteMessage(List<Integer> id){
+    public int deleteMessage(Integer id){
         return  messageDaoImpl.deleteObjectByKey(id);
     }
 
@@ -103,6 +104,7 @@ public class MessageServiceImpl {
      * @return
      */
     public int updateMessage(Message message){
+        message.setCreatedate(Datetool.format());
         return messageDaoImpl.updateObject(message);
     }
 }

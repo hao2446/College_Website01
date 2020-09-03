@@ -9,7 +9,7 @@ public class Datetool {
      * @return
      */
     public static String format(){
-        return format(new Date(),"yyyy-mm-dd");
+        return format(new Date(),"YYYY-MM-dd");
     }
     public static String format(Date date, String format) {
         try {

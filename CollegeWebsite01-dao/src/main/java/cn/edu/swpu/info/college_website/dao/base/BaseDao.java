@@ -13,10 +13,10 @@ public interface BaseDao<T,Key extends Serializable> {
 
     /**
      * 通过主键(数组)删除对象
-     * @param keys
+     * @param key
      * @return 删除的行数
      */
-   int  deleteObjectByKey(List<Key> keys);
+   int  deleteObjectByKey(Key key);
 
     /**
      * 通过对象进行更新

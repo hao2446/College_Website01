@@ -2,14 +2,18 @@ package cn.edu.swpu.info.college_website.dao.base;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 abstract class Mybaties {
+//    @Resource
+//    SqlSessionFactory sqlSessionFactory;
     @Resource
-    SqlSessionFactory sqlSessionFactory;
+    SqlSessionTemplate sqlSessionTemplate;
 
     /**
      *添加新对象
@@ -21,8 +25,8 @@ abstract class Mybaties {
         int result=0;
         try {
             if (object!=null){
-                SqlSession sqlSession=sqlSessionFactory.openSession(true);
-                result=sqlSession.insert(statement,object);
+                //SqlSession sqlSession=sqlSessionFactory.openSession(true);
+                result=sqlSessionTemplate.insert(statement,object);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -39,8 +43,8 @@ abstract class Mybaties {
     protected int delete(String statement,Object object){
         int result=0;
         try {
-            SqlSession sqlSession=sqlSessionFactory.openSession(true);
-            result=sqlSession.delete(statement,object);
+            //SqlSession sqlSession=sqlSessionFactory.openSession(true);
+            result=sqlSessionTemplate.delete(statement,object);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -56,8 +60,8 @@ abstract class Mybaties {
     protected int update(String statement,Object object){
         int result=0;
         try {
-            SqlSession sqlSession=sqlSessionFactory.openSession(true);
-            result=sqlSession.update(statement,object);
+           // SqlSession sqlSession=sqlSessionFactory.openSession(true);
+            result=sqlSessionTemplate.update(statement,object);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -74,8 +78,8 @@ abstract class Mybaties {
     protected  <T> T select(String statement,Object object){
         T t=null;
         try{
-            SqlSession sqlSession=sqlSessionFactory.openSession();
-            t=sqlSession.selectOne(statement,object);
+            //SqlSession sqlSession=sqlSessionFactory.openSession();
+            t=sqlSessionTemplate.selectOne(statement,object);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -84,8 +88,8 @@ abstract class Mybaties {
     protected Integer select(String statement){
         int t=0;
         try{
-            SqlSession sqlSession=sqlSessionFactory.openSession();
-            t=sqlSession.selectOne(statement);
+           // SqlSession sqlSession=sqlSessionFactory.openSession();
+            t=sqlSessionTemplate.selectOne(statement);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -102,8 +106,8 @@ abstract class Mybaties {
     protected <T> List<T> selectList(String statement, Object object){
         List<T> objectList=null;
         try{
-            SqlSession sqlSession=sqlSessionFactory.openSession();
-            objectList=sqlSession.selectList(statement,object);
+           // SqlSession sqlSession=sqlSessionFactory.openSession();
+            objectList=sqlSessionTemplate.selectList(statement,object);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -122,8 +126,8 @@ abstract class Mybaties {
     protected <T,Key> Map<T ,Key> selectMap(String statement,Object object,String mapKey){
         Map<T,Key> objectMap=null;
         try{
-            SqlSession sqlSession=sqlSessionFactory.openSession();
-            objectMap=sqlSession.selectMap(statement,object,mapKey);
+            //SqlSession sqlSession=sqlSessionFactory.openSession();
+            objectMap=sqlSessionTemplate.selectMap(statement,object,mapKey);
         }catch (Exception e)
         {
             e.printStackTrace();

@@ -25,6 +25,6 @@
     新闻内容：<input type="text" name="messagecontent"><br>
     提交：<input type="submit" value="添加新闻">
 </form>
-<img src="http://localhost:8080/image/imagepsb.jpg" width="500" height="500">
+<img src="http://localhost:8080/message/show/imagepsb.jpg" width="500" height="500">
 </body>
 </html>

@@ -1,6 +1,8 @@
 package cn.edu.swpu.info.college_website.web;
 
+import cn.edu.swpu.info.Message;
 import cn.edu.swpu.info.ResponseMessage;
+import cn.edu.swpu.info.college_website.common.picturePath;
 import cn.edu.swpu.info.college_website.common.savePicture;
 import cn.edu.swpu.info.college_website.common.showPictureImpl;
 import cn.edu.swpu.info.college_website.services.MessageServiceImpl;
@@ -27,15 +29,25 @@ public class MessageController {
     /**
      * 根据前端传入的Messageid
      * 根据MessaageId进行查找
-     * @param model
+     * @param
      * @return
      */
+    @ResponseBody
     @RequestMapping("/getMessage")
-    public String getMessage(@RequestParam String  messageid, Model model){
-        Message message= messageServiceImpl.getMessageContent(Integer.parseInt(messageid));
+    public ResponseMessage getMessage(@RequestParam("messageid") Integer  messageid){
+        Message message= messageServiceImpl.getMessageContent(messageid);
         //System.out.println(message);
-        model.addAttribute("getContent",message);
-        return "get";
+        //model.addAttribute("getContent",message);
+        ResponseMessage<Message> responseMessage=new ResponseMessage<>();
+        if (message!=null){
+            responseMessage.setCode(200);
+            responseMessage.setData(message);
+            responseMessage.setMsg("查询成功");
+        }else {
+            responseMessage.setCode(1000);
+            responseMessage.setMsg("不存在这个新闻");
+        }
+        return responseMessage;
     }
 
     /**
@@ -44,13 +56,14 @@ public class MessageController {
      * @param model
      * @return
      */
+    @ResponseBody
     @RequestMapping("/getNews")
-    public String getMessages(Model model){
+    public List<Message> getMessages(@RequestParam("messagetype") String messagetype){
         Message message=new Message();
-        message.setMessagetype(1);
+        //message.setMessagetype();
+        message.setMessagetype(messagetype);
         List<Message> newsList= messageServiceImpl.getNews(message);
-        model.addAttribute("news",newsList);
-        return "get";
+        return newsList;
     }
 
     /**
@@ -73,7 +86,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/insertMessage",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseMessage<String> insertMessage(@RequestBody Message message) throws IOException {
+    public ResponseMessage<String> insertMessage(@RequestBody Message  message) throws IOException {
         System.out.println(message.toString());
        // message.setMessageid(messageServiceImpl.getMaxId()+1);
         String msg=messageServiceImpl.addMessage(message);
@@ -116,17 +129,57 @@ public class MessageController {
      * @param messageid
      * @return
      */
+    @ResponseBody
     @RequestMapping(value = "/deleteMessages")
-    public String deleteMessages(@RequestBody List<Integer> messageid){
+    public ResponseMessage deleteMessages(@RequestParam("messageid") Integer messageid){
         int result=0;
         result= messageServiceImpl.deleteMessage(messageid);
-        return "get";
+        ResponseMessage<Integer> responseMessage=new ResponseMessage<>();
+        if (result==1){
+            responseMessage.setCode(200);
+            responseMessage.setMsg("删除成功");
+            responseMessage.setData(result);
+        }else if(result==0){
+                responseMessage.setCode(1000);
+                responseMessage.setData(result);
+                responseMessage.setMsg("删除失败");
+        }
+        return responseMessage;
     }
+
+    /**
+     * 更新新闻
+     * @param message
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateMessage" ,method = RequestMethod.POST)
+    public ResponseMessage updateMessage(@RequestBody Message message){
+        int result=0;
+        result=messageServiceImpl.updateMessage(message);
+        ResponseMessage<Integer> responseMessage=new ResponseMessage<>();
+        if (result==1){
+            responseMessage.setCode(200);
+            responseMessage.setMsg("修改成功");
+        }else {
+            responseMessage.setMsg("修改失败");
+            responseMessage.setCode(1000);
+        }
+        return responseMessage;
+    }
+    /**
+     * 显示图片
+     * @param filename
+     * @param suffix
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping("/show/{filename}.{suffix}")
     public void showPicture(@PathVariable("filename") String filename,
                             @PathVariable("suffix") String suffix,
                             HttpServletResponse response) throws IOException {
-        File imagefile=new File("D:\\Users\\lenovo\\Desktop\\CollegeWebsite01\\file\\img\\"+filename+"."+suffix);
+        System.out.println("运行啦");
+        File imagefile=new File(picturePath.path+filename+"."+suffix);
         showPictures.responseFile(response,imagefile);
     }
 

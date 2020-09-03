@@ -5,7 +5,7 @@
   <resultMap id="BaseResultMap" type="cn.edu.swpu.info.Message">
     <id column="messageId" jdbcType="INTEGER" property="messageid" />
     <result column="messageTitle" jdbcType="VARCHAR" property="messagetitle" />
-    <result column="messageType" jdbcType="INTEGER" property="messagetype" />
+    <result column="messageType" jdbcType="VARCHAR" property="messagetype" />
     <result column="messageImag" jdbcType="VARCHAR" property="messageimag" />
     <result column="createDate" jdbcType="VARCHAR" property="createdate" />
     <result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
@@ -63,17 +63,16 @@
 
     <!--查询信息总数-->
     <select id="countByExample" parameterType="cn.edu.swpu.info.Message" resultType="java.lang.Integer">
-    select count(*) from message
+    select MAX(messageId) from message
   </select>
 
     <!--删除-->
     <!--根据主键数组进行删除-->
-  <delete id="deleteByKey" parameterType="java.lang.reflect.Array">
-    delete from message where messageId IN
---       where messageId = #{messageid,jdbcType=INTEGER}
-    <foreach collection="array" item="messageid" open="(" separator="," close=")">
-        #{messageid}
-    </foreach>
+  <delete id="deleteByKey" parameterType="java.lang.Integer" >
+    delete from message where messageId = #{messageid,jdbcType=INTEGER}
+     <!--<foreach collection="array" item="messageid" open="(" separator="," close=")">-->
+
+    <!--</foreach>-->
   </delete>
 
     <!--插入-->
@@ -117,7 +116,7 @@
         #{messagetitle,jdbcType=VARCHAR},
       </if>
       <if test="messagetype != null">
-        #{messagetype,jdbcType=INTEGER},
+        #{messagetype,jdbcType=VARCHAR},
       </if>
       <if test="messageimag != null">
         #{messageimag,jdbcType=VARCHAR},
@@ -149,7 +148,7 @@
         messageTitle = #{messagetitle,jdbcType=VARCHAR},
       </if>
       <if test="messagetype != null">
-        messageType = #{messagetype,jdbcType=INTEGER},
+        messageType = #{messagetype,jdbcType=VARCHAR},
       </if>
       <if test="messageimag != null">
         messageImag = #{messageimag,jdbcType=VARCHAR},

@@ -12,6 +12,7 @@ public class savePicture {
             String suffix=fileName.substring(fileName.lastIndexOf("."));
             String newFileName= UUID.randomUUID().toString()+suffix;
             String filePath=picturePath.path+newFileName;
+           // newFileName="image/"+newFileName;//返回图片访问路径
             File save=new File(filePath);
             try{
                 file.transferTo(save);
