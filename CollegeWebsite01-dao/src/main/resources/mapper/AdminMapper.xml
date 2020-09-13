@@ -2,10 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.swpu.info.college_website.dao.AdminDaoImpl">
   <!--根据主键进行全属性查询，并封装-->
-  <select id="selectOneByKey"  resultType="cn.edu.swpu.info.admin">
+  <select id="selectObject"  resultType="cn.edu.swpu.info.admin">
     select * from admin
     where loginName = #{loginName}
   </select>
+    <!--查询最大的id-->
+    <select id="countByExample" parameterType="cn.edu.swpu.info.admin" resultType="java.lang.Integer">
+    select MAX(adminId) from admin
+  </select>
+    <!--插入用户数据,默认将权限设置为1，代表平民百姓-->
+    <insert id="insertObject" parameterType="cn.edu.swpu.info.admin">
+		INSERT INTO `admin` (adminId,loginName,adminPassword,adminPermissions) VALUES (#{adminId},#{loginName},#{adminPassword},1)
+	</insert>
 
+    <!--修改用户的权限-->
+    <update id="updateContion" parameterType="cn.edu.swpu.info.Message">
+        update admin set adminPermissions=#{adminPermissions}
+        where adminId=#{adminId}
+    </update>
 
 </mapper>

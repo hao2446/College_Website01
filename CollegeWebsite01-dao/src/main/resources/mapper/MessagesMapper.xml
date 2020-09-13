@@ -30,7 +30,7 @@
     <sql id="QUERY_WHERE_CLAUSE">
         <trim prefix="where" prefixOverrides="" suffixOverrides="and">
             <if test="messageid !=null"> messageId=#{messageid} and </if>
-            <if test="messagetitle !=null and messagetitle.equals(	&quot;	&quot;)"> messageTitle=#{messagetitle} and </if>
+            <if test="messagetitle !=null and messagetitle.equals(	&quot;	&quot;)"> messageTitle like concat('%',#{messagetitle},'%') and </if>
             <if test="messagetype !=null "> messageType=#{messagetype} and </if>
             <if test="messageimag !=null and messageimag.equals(	&quot;	&quot;)">messageImage=#{messageimage} and </if>
             <if test="createdate !=null">createDate=#{createdate}and </if>
@@ -50,7 +50,7 @@
     where messageId = #{messageId,jdbcType=INTEGER}
   </select>
 
-    <!--进行新闻类型查询-->
+    <!--进行新闻表的非主键进行查询查询-->
     <select id="selectObjectList" parameterType="cn.edu.swpu.info.Message" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List" />

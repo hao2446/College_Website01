@@ -32,6 +32,14 @@ public class MessageServiceImpl {
     }
 
     /**
+     * 根据新闻得标题进行模糊查询
+     * @return
+     */
+    public List<Message> getAllNews(Message message){
+        return messageDaoImpl.selectObiectList(message);
+    }
+
+    /**
      * 获取最大的id
      * @return
      */

@@ -53,7 +53,7 @@ public class MessageController {
     /**
      * 根据前端传入的Messagetype
      * 根据新闻类型进行查询，并返回数据
-     * @param model
+     * @param messagetype
      * @return
      */
     @ResponseBody
@@ -66,6 +66,21 @@ public class MessageController {
         return newsList;
     }
 
+    /**
+     * 根据文章的标题进行模糊查询得到新闻
+     * @param title
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getAllNews")
+    public List<Message> getAllMessages( @RequestParam("messagetitle") String title){
+        Message message=new Message();
+        //message.setMessagetype();
+        message.setMessagetitle(title);
+        List<Message> newsList= messageServiceImpl.getAllNews(message);
+        System.out.println(newsList);
+        return newsList;
+    }
     /**
      * 进入首页直接获取
      * 首页加载数据
