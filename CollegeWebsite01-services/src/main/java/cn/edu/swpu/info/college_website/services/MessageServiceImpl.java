@@ -18,9 +18,40 @@ public class MessageServiceImpl {
      * 根据主键进行查找新闻
      * @return
      */
+    //
     public Message getMessageContent(Integer messageid){
-        return messageDaoImpl.selectObject(messageid);
+        Message message=messageDaoImpl.selectObject(messageid);
+        //message.setClickrate(message.getClickrate()+1);
+       // updateMessageClick(message);
+        return message;
     }
+
+    /**
+     * 查询上一条新闻
+     * @param messageid
+     * @return
+     */
+    //@Transactional
+    public int  getLastMessage(Integer messageid){
+        List<Integer> messageidList=new ArrayList<>();
+        //PageHelper.startPage(1,1);
+        messageidList=messageDaoImpl.getLastMessage(messageid);
+        //PageInfo pageInfo=new PageInfo(messageidList);
+        //System.out.println(pageInfo);
+        return messageidList.get(0);
+    }
+
+    /**
+     * 返回下一条新闻
+     * @param messageid
+     * @return
+     */
+    public int getNextMessage(Integer messageid){
+        List<Integer> messageidList=new ArrayList<>();
+        messageidList=messageDaoImpl.getNextMessage(messageid);
+        return messageidList.get(0);
+    }
+
 
     /**
      * 根据新闻的类型查找新闻
@@ -113,6 +144,11 @@ public class MessageServiceImpl {
      */
     public int updateMessage(Message message){
         message.setCreatedate(Datetool.format());
+        return messageDaoImpl.updateObject(message);
+    }
+    public int updateMessageClick(Message message){
+       // Message message=new Message();
+        message.setClickrate(message.getClickrate()+1);
         return messageDaoImpl.updateObject(message);
     }
 }

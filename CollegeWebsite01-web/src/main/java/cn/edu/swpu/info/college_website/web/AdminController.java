@@ -24,11 +24,16 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping(value="/login",method = RequestMethod.POST)
-    public ResponseMessage getAdmin(@RequestBody admin admin){
+    public ResponseMessage getAdmin(@RequestBody admin  admin){
         System.out.println(admin.toString());
         admin admin1= adminServiceImpl.getAdminContent(admin.getLoginName());
+        System.out.println(admin1);
         ResponseMessage<String> responseMessage=new ResponseMessage<>();
-        if (admin1.getAdminPassword().equals(admin.getAdminPassword()))
+        if (admin1==null){
+            responseMessage.setMsg("登录失败");
+            return responseMessage;
+        }
+        if (admin1.getAdminPassword().equals(admin1.getAdminPassword()))
         {
             responseMessage.setCode(200);
             responseMessage.setMsg("登录成功");

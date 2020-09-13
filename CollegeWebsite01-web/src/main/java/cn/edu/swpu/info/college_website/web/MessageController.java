@@ -8,7 +8,6 @@ import cn.edu.swpu.info.college_website.common.showPictureImpl;
 import cn.edu.swpu.info.college_website.services.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-
+/**
+ * 新闻相关操作
+ */
 @RequestMapping("/message")
 @Controller
 public class MessageController {
@@ -36,10 +37,9 @@ public class MessageController {
     @RequestMapping("/getMessage")
     public ResponseMessage getMessage(@RequestParam("messageid") Integer  messageid){
         Message message= messageServiceImpl.getMessageContent(messageid);
-        //System.out.println(message);
-        //model.addAttribute("getContent",message);
         ResponseMessage<Message> responseMessage=new ResponseMessage<>();
         if (message!=null){
+            messageServiceImpl.updateMessageClick(message);//用于更改点击量
             responseMessage.setCode(200);
             responseMessage.setData(message);
             responseMessage.setMsg("查询成功");
@@ -51,9 +51,54 @@ public class MessageController {
     }
 
     /**
+     * 查询上一条新闻
+     * @param messageid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/lastMessage")
+    public ResponseMessage getLastMessage(@RequestParam("messageid")Integer messageid){
+        ResponseMessage<Integer> responseMessage=new ResponseMessage<>();
+        int message=messageServiceImpl.getLastMessage(messageid);
+        if (message!=-1){
+            responseMessage.setCode(200);
+            responseMessage.setData(message);
+            responseMessage.setMsg("查询成功");
+        }else {
+            responseMessage.setCode(1000);
+            responseMessage.setMsg("不存在这个新闻");
+        }
+        return responseMessage;
+    }
+
+    /**
+     * 返回下一条新闻
+     * @param messageid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/nextMessage")
+    public ResponseMessage getNextMessage(@RequestParam("messageid") Integer messageid){
+        ResponseMessage<Integer> responseMessage=new ResponseMessage<>();
+        int message=messageServiceImpl.getNextMessage(messageid);
+        if (message!=-1){
+            responseMessage.setCode(200);
+            responseMessage.setData(message);
+            responseMessage.setMsg("查询成功");
+        }else {
+            responseMessage.setCode(1000);
+            responseMessage.setMsg("不存在这个新闻");
+        }
+        return responseMessage;
+    }
+    /**
      * 根据前端传入的Messagetype
      * 根据新闻类型进行查询，并返回数据
+<<<<<<< Updated upstream
      * @param messagetype
+=======
+     * @param
+>>>>>>> Stashed changes
      * @return
      */
     @ResponseBody
@@ -123,14 +168,6 @@ public class MessageController {
     public ResponseMessage<String> uploadImg(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         String path= savePicture.uploadPicture(multipartFile);
         System.out.println(path);
-//        System.out.println(multipartFile.getOriginalFilename());
-//        String path= picturePath.path+multipartFile.getOriginalFilename();
-//        multipartFile.transferTo(new File(path));
-//        message.setMessageimag(path);
-        // message.setMessageid(messageServiceImpl.getMaxId()+1);
-        //String msg=messageServiceImpl.addMessage(message);
-        // model.addAttribute("msg",msg);
-//        model.addAttribute("image",multipartFile.getOriginalFilename());
         ResponseMessage<String> responseMessage = new ResponseMessage<>();
         responseMessage.setCode(1000);
         responseMessage.setData("/message/show/"+path);
