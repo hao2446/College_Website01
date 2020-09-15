@@ -1,5 +1,8 @@
 package cn.edu.swpu.info.college_website.dao.base;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import javax.annotation.Resource;
@@ -10,7 +13,7 @@ abstract class Mybaties {
 //    @Resource
 //    SqlSessionFactory sqlSessionFactory;
     @Resource
-    public SqlSessionTemplate sqlSessionTemplate;
+    SqlSessionTemplate sqlSessionTemplate;
 
     /**
      *添加新对象

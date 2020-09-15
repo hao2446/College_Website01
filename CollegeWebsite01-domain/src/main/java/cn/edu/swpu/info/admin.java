@@ -1,17 +1,10 @@
 package cn.edu.swpu.info;
 
 public class admin {
-<<<<<<< Updated upstream
     /**
      * 管理员Id
      */
     private Integer adminId;
-=======
-//    /**
-//     * 管理员Id
-//     */
-   private Integer adminId;
->>>>>>> Stashed changes
     /**
      * 管理员登录名
      */
@@ -24,14 +17,6 @@ public class admin {
      * 管理员权限
      */
     private Integer adminPermissions;
-
-    public Integer getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(Integer adminId) {
-        this.adminId = adminId;
-    }
 
     public Integer getAdminId() {
         return adminId;
@@ -68,8 +53,7 @@ public class admin {
     @Override
     public String toString() {
         return "admin{" +
-                "adminId=" + adminId +
-                ", loginName='" + loginName + '\'' +
+                " loginName='" + loginName + '\'' +
                 ", adminPassword='" + adminPassword + '\'' +
                 ", adminPermissions=" + adminPermissions +
                 '}';

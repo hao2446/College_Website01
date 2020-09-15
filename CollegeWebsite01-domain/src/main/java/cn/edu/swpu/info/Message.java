@@ -24,15 +24,6 @@ public class Message {
     private Date modifydate;
 
     private Integer status;
-    private Integer clickrate;
-
-    public Integer getClickrate() {
-        return clickrate;
-    }
-
-    public void setClickrate(Integer clickrate) {
-        this.clickrate = clickrate;
-    }
 
     public String getMessageimag() {
         return messageimag;
@@ -81,6 +72,15 @@ public class Message {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+    //    public String getData() {
+//        return data;
+//    }
+//
+//    public void setData(String data) {
+//        this.data = data;
+//    }
+
     public String getCreatedate() {
         return createdate;
     }

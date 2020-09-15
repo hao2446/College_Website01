@@ -24,16 +24,11 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping(value="/login",method = RequestMethod.POST)
-    public ResponseMessage getAdmin(@RequestBody admin  admin){
+    public ResponseMessage getAdmin(@RequestBody admin admin){
         System.out.println(admin.toString());
         admin admin1= adminServiceImpl.getAdminContent(admin.getLoginName());
-        System.out.println(admin1);
         ResponseMessage<String> responseMessage=new ResponseMessage<>();
-        if (admin1==null){
-            responseMessage.setMsg("登录失败");
-            return responseMessage;
-        }
-        if (admin1.getAdminPassword().equals(admin1.getAdminPassword()))
+        if (admin1.getAdminPassword().equals(admin.getAdminPassword()))
         {
             responseMessage.setCode(200);
             responseMessage.setMsg("登录成功");
@@ -72,8 +67,8 @@ public class AdminController {
      * 根据后端先行查询总的记录数来确定插入时的主键
      * @return
      */
-//    @ResponseBody
     @RequestMapping(value = "/modifyRight",method = RequestMethod.POST)
+//    @ResponseBody
     public ResponseMessage modifyRight(admin admin)  {
         int result=0;
         result=adminServiceImpl.modifyRight(admin);
