@@ -70,7 +70,7 @@
   </select>
     <!--查询上一条新闻-->
     <select id="selectLastMessage" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select  messageId from message where messageId &lt; #{messageid,jdbcType=INTEGER}order by messageId DESC
+        select  messageId from message where messageId &lt; #{messageid,jdbcType=INTEGER} order by messageId DESC
     </select>
     <!--查询下一条新闻-->
     <select id="selectNextMessage" parameterType="java.lang.Integer" resultType="java.lang.Integer">
