@@ -1,5 +1,7 @@
 package cn.edu.swpu.info.college_website.dao.base;
 
+import cn.edu.swpu.info.MessagesExample;
+import cn.edu.swpu.info.college_website.dao.Impl.MessageDaoImpl;
 
 import java.io.Serializable;
 import java.util.List;
