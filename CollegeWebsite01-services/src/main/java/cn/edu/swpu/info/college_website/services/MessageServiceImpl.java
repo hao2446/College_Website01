@@ -58,6 +58,14 @@ public class MessageServiceImpl {
     }
 
     /**
+     * 根据新闻得标题进行模糊查询
+     * @return
+     */
+    public List<Message> getAllNews(Message message){
+        return messageDaoImpl.selectObiectList(message);
+    }
+
+    /**
      * 获取最大的id
      * @return
      */
@@ -107,6 +115,7 @@ public class MessageServiceImpl {
         String msg=null;
         message.setCreatedate(Datetool.format());
         message.setMessageid(getMaxId()+1);
+        message.setClickrate(0);
         if (messageDaoImpl.insertObject(message)==1){
             msg="添加成功";
         }else {

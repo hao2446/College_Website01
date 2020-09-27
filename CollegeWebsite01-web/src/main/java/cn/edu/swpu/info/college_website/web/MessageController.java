@@ -36,10 +36,12 @@ public class MessageController {
     @ResponseBody
     @RequestMapping("/getMessage")
     public ResponseMessage getMessage(@RequestParam("messageid") Integer  messageid){
+        System.out.println(messageid);
         Message message= messageServiceImpl.getMessageContent(messageid);
         ResponseMessage<Message> responseMessage=new ResponseMessage<>();
         if (message!=null){
-            messageServiceImpl.updateMessageClick(message);//用于更改点击量
+           int a= messageServiceImpl.updateMessageClick(message);//用于更改点击量
+            System.out.println(a);
             responseMessage.setCode(200);
             responseMessage.setData(message);
             responseMessage.setMsg("查询成功");
@@ -107,6 +109,21 @@ public class MessageController {
         return newsList;
     }
 
+    /**
+     * 根据文章的标题进行模糊查询得到新闻
+     * @param title
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getAllNews")
+    public List<Message> getAllMessages( @RequestParam("messagetitle") String title){
+        Message message=new Message();
+        //message.setMessagetype();
+        message.setMessagetitle(title);
+        List<Message> newsList= messageServiceImpl.getAllNews(message);
+        System.out.println(newsList);
+        return newsList;
+    }
     /**
      * 进入首页直接获取
      * 首页加载数据

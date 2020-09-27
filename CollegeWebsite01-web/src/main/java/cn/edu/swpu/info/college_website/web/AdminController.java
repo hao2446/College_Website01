@@ -8,10 +8,7 @@ import cn.edu.swpu.info.college_website.services.AdminServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RequestMapping("/Admin")
@@ -46,6 +43,48 @@ public class AdminController {
                 responseMessage.setCode(1000);
             }
 
+        return responseMessage;
+    }
+    /**
+     * 添加新注册的用户
+     * 根据后端先行查询总的记录数来确定插入时的主键
+     * @return
+     */
+    @RequestMapping(value = "/registerUser",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessage<String> registerUser(@RequestBody admin admin)   {
+        System.out.println(admin);
+//        System.out.println(password+loginName);
+//       admin admin=new admin();
+//       admin.setAdminPassword(password);
+//       admin.setLoginName(loginName);
+//       System.out.println(admin.toString());
+        String msg=adminServiceImpl.registerUser(admin);
+//        System.out.println(msg);
+        ResponseMessage<String> responseMessage = new ResponseMessage<>();
+        responseMessage.setCode(1000);
+        responseMessage.setMsg(msg);
+        return responseMessage;
+    }
+
+    /**
+     * 修改用户权限，0超级管理员，1管理员，2平民
+     * 根据后端先行查询总的记录数来确定插入时的主键
+     * @return
+     */
+    @RequestMapping(value = "/modifyRight",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessage<String> modifyRight(@RequestBody admin admin)  {
+        int result=0;
+        result=adminServiceImpl.modifyRight(admin);
+        ResponseMessage<String> responseMessage=new ResponseMessage<>();
+        if (result==1){
+            responseMessage.setCode(200);
+            responseMessage.setMsg("修改权限成功");
+        }else {
+            responseMessage.setMsg("修改权限失败");
+            responseMessage.setCode(1000);
+        }
         return responseMessage;
     }
 
