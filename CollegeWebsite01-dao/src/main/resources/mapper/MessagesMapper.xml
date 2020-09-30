@@ -39,6 +39,7 @@
             <if test="modifydate !=null">modifyDate=#{modifydate}and </if>
             <if test="status !=null">status=#{status}</if>
             <if test="author !=null and !author.equals(	&quot;	&quot;)">author=#{author}</if>
+            <if test="start!=null and last!=null">limit #{start},3</if>
             <if test="clickrate !=null" >clickRate=#{clickrate}</if>
         </trim>
     </sql>
@@ -61,10 +62,14 @@
         <include refid="Blob_Column_List" />
         <include refid="QUERY_FROM_TABLE"/>
         <include refid="QUERY_WHERE_CLAUSE"/>
+
         order by messageId DESC
     </select>
+  <!--查询信息总数-->
+  <select id="total" parameterType="java.lang.String" resultType="java.lang.Integer">
+            select count(*) from   message where messagetype=#{message}
+   </select>
 
-    <!--查询信息总数-->
     <select id="countByExample" parameterType="cn.edu.swpu.info.Message" resultType="java.lang.Integer">
     select MAX(messageId) from message
   </select>

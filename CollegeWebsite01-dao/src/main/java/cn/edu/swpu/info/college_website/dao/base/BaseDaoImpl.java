@@ -1,7 +1,5 @@
 package cn.edu.swpu.info.college_website.dao.base;
 
-import cn.edu.swpu.info.MessagesExample;
-import cn.edu.swpu.info.college_website.dao.Impl.MessageDaoImpl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -74,5 +72,8 @@ public abstract class BaseDaoImpl<T,Key extends Serializable> extends Mybaties i
     }
     public int selectMaxId(){
         return this.select(getNameSpace(DEFAULT_SELECT_Max_Id));
+    }
+    public int selectCount(String messagetype){
+        return this.select(getNameSpace("total"),messagetype);
     }
 }

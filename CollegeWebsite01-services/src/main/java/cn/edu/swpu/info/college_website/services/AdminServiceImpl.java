@@ -1,10 +1,12 @@
 package cn.edu.swpu.info.college_website.services;
 
+import cn.edu.swpu.info.Message;
 import cn.edu.swpu.info.admin;
 import cn.edu.swpu.info.college_website.dao.Impl.AdminDaoImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class AdminServiceImpl {
@@ -22,8 +24,14 @@ public class AdminServiceImpl {
      * @return
      */
     public admin getAdminContent(String loginName){
-
         return adminDaoImpl.selectObject(loginName);
+    }
+    /**
+     * 查询所有的用户
+     * @return
+     */
+    public List<admin> getAllAdmin(admin admin){
+        return adminDaoImpl.selectObiectList(admin);
     }
 
     /**

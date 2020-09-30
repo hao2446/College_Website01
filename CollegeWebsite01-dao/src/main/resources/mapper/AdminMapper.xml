@@ -10,13 +10,16 @@
     <select id="countByExample" parameterType="cn.edu.swpu.info.admin" resultType="java.lang.Integer">
     select MAX(adminId) from admin
   </select>
+    <select id="selectObjectList" parameterType="cn.edu.swpu.info.admin" resultType="cn.edu.swpu.info.admin">
+        select * from admin
+    </select>
     <!--插入用户数据,默认将权限设置为1，代表平民百姓-->
     <insert id="insertObject" parameterType="cn.edu.swpu.info.admin">
 		INSERT INTO `admin` (adminId,loginName,adminPassword,adminPermissions) VALUES (#{adminId},#{loginName},#{adminPassword},1)
 	</insert>
 
     <!--修改用户的权限-->
-    <update id="updateContion" parameterType="cn.edu.swpu.info.Message">
+    <update id="updateContion" parameterType="cn.edu.swpu.info.admin">
         update admin set adminPermissions=#{adminPermissions}
         where adminId=#{adminId}
     </update>
