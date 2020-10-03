@@ -15,7 +15,6 @@ public class Message {
     private String messagecontent;
 
     private String author;
-
    // private String data;
     private String messageimag;
 
@@ -25,6 +24,34 @@ public class Message {
 
     private Integer status;
     private Integer clickrate;
+
+    private Integer start;
+    private Integer last;
+    private Integer page;
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getStart() {
+        return start;
+    }
+
+    public void setStart(Integer start) {
+        this.start = start;
+    }
+
+    public Integer getLast() {
+        return last;
+    }
+
+    public void setLast(Integer last) {
+        this.last = last;
+    }
 
 
     public Integer getClickrate() {

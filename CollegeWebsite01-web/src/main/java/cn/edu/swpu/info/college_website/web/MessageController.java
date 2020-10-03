@@ -6,6 +6,7 @@ import cn.edu.swpu.info.college_website.common.picturePath;
 import cn.edu.swpu.info.college_website.common.savePicture;
 import cn.edu.swpu.info.college_website.common.showPictureImpl;
 import cn.edu.swpu.info.college_website.services.MessageServiceImpl;
+import com.sun.glass.ui.GestureSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -113,21 +114,50 @@ public class MessageController {
         List<Message> newsList= messageServiceImpl.getNews(message);
         return newsList;
     }
-
     /**
      * 根据文章的标题进行模糊查询得到新闻
-     * @param title
+     * @param messagetitle
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getAllNews")
-    public List<Message> getAllMessages( @RequestParam("messagetitle") String title){
+    @RequestMapping(value = "/getNewsByTitle" )
+    public List<Message> getMessagesByTitle(@RequestParam("messagetitle") String messagetitle){
         Message message=new Message();
-        //message.setMessagetype();
-        message.setMessagetitle(title);
+        message.setMessagetitle(messagetitle);
+        System.out.println("*******"+message.toString());
+//        int total=messageServiceImpl.getTotal();
+//        message.setStart(message.getPage()*3+1);
+//        message.setLast(message.getStart()+3);
+//        if (message.getLast()>total){
+//            message.setLast(message.getLast()-total);
+//        }
         List<Message> newsList= messageServiceImpl.getAllNews(message);
         System.out.println(newsList);
         return newsList;
+    }
+    /**
+     * 根据文章的类型和页数进行模糊查询得到新闻
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getAllNews" )
+    public List<Message> getAllMessages(@RequestParam("messagetype") String messagetype,@RequestParam("page") String page){
+        Message message=new Message();
+        message.setMessagetype(messagetype);
+//        message.setPage(Integer.parseInt(page));
+        int total=messageServiceImpl.getTotal(messagetype);
+        System.out.println(total);
+        List<Message> newsList= messageServiceImpl.getAllNews(message);
+        System.out.println(newsList);
+        int start=Integer.parseInt(page)* 3 ;
+        int end=start+2;
+        if (end>total){
+            end = message.getLast()-total;
+        }
+        List<Message> newsList01=newsList.subList(start, end);
+//        System.out.println(message.getStart()+"asda"+message.getLast());
+        System.out.println(newsList01);
+        return newsList01;
     }
     /**
      * 进入首页直接获取
@@ -151,10 +181,7 @@ public class MessageController {
     @ResponseBody
     public ResponseMessage<String> insertMessage(@RequestBody Message  message) throws IOException {
         System.out.println(message.toString());
-       // message.setMessageid(messageServiceImpl.getMaxId()+1);
         String msg=messageServiceImpl.addMessage(message);
-       // model.addAttribute("msg",msg);
-//        model.addAttribute("image",multipartFile.getOriginalFilename());
         ResponseMessage<String> responseMessage = new ResponseMessage<>();
         responseMessage.setCode(1000);
         responseMessage.setMsg(msg);

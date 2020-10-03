@@ -7,9 +7,9 @@ import cn.edu.swpu.info.college_website.services.AdminServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @RequestMapping("/Admin")
 @Controller
@@ -24,7 +24,7 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping(value="/login",method = RequestMethod.POST)
-    public ResponseMessage getAdmin(@RequestBody admin  admin){
+    public ResponseMessage getAdmin(@RequestBody admin admin){
         System.out.println(admin.toString());
         admin admin1= adminServiceImpl.getAdminContent(admin.getLoginName());
         System.out.println(admin1);
@@ -44,6 +44,20 @@ public class AdminController {
             }
 
         return responseMessage;
+    }
+    @ResponseBody
+    @RequestMapping(value="/getAllAdmin",method = RequestMethod.POST)
+    public List<admin> getAllAdmin(){
+        admin admin =new admin();
+        List<admin> list =adminServiceImpl.getAllAdmin(admin);
+        ResponseMessage<String> responseMessage=new ResponseMessage<>();
+        if (list==null){
+            responseMessage.setMsg("查询失败");
+            return null;
+        }else
+        {
+            return list;
+        }
     }
     /**
      * 添加新注册的用户

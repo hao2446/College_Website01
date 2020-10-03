@@ -81,7 +81,13 @@ public class MessageServiceImpl {
     public Integer getMaxId(){
         return messageDaoImpl.selectMaxId();
     }
-
+    /**
+     * 查询信息的总数
+     * @return
+     */
+    public Integer getTotal(String messagetype){
+        return messageDaoImpl.selectCount(messagetype);
+    }
     /**
      * 返回在加载首页时，所需要的数据
      * @return
