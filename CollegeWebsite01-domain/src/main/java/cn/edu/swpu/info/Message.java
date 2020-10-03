@@ -2,6 +2,7 @@ package cn.edu.swpu.info;
 
 
 
+import java.security.PrivilegedExceptionAction;
 import java.util.Date;
 
 public class Message {
@@ -24,7 +25,7 @@ public class Message {
 
     private Integer status;
     private Integer clickrate;
-
+    private Integer total;
     private Integer start;
     private Integer last;
     private Integer page;
@@ -52,7 +53,13 @@ public class Message {
     public void setLast(Integer last) {
         this.last = last;
     }
+    public Integer getTotal() {
+        return total;
+    }
 
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 
     public Integer getClickrate() {
         return clickrate;
@@ -131,5 +138,25 @@ public class Message {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "messageid=" + messageid +
+                ", messagetitle='" + messagetitle + '\'' +
+                ", messagetype='" + messagetype + '\'' +
+                ", messagecontent='" + messagecontent + '\'' +
+                ", author='" + author + '\'' +
+                ", messageimag='" + messageimag + '\'' +
+                ", createdate='" + createdate + '\'' +
+                ", modifydate=" + modifydate +
+                ", status=" + status +
+                ", clickrate=" + clickrate +
+                ", total*********=" + total +
+                ", start=" + start +
+                ", last=" + last +
+                ", page=" + page +
+                '}';
     }
 }

@@ -142,23 +142,33 @@ public class MessageController {
     @ResponseBody
     @RequestMapping(value = "/getAllNews" )
     public List<Message> getAllMessages(@RequestParam("messagetype") String messagetype,@RequestParam("page") String page){
+        System.out.println(messagetype+"*******"+page);
         Message message=new Message();
         message.setMessagetype(messagetype);
 //        message.setPage(Integer.parseInt(page));
         int total=messageServiceImpl.getTotal(messagetype);
-        System.out.println(total);
         List<Message> newsList= messageServiceImpl.getAllNews(message);
         System.out.println(newsList);
-        int start=Integer.parseInt(page)* 3 ;
-        int end=start+2;
+        //十条数据
+        int start=(Integer.parseInt(page)-1)*10 ;
+        if (start>total) {
+            return null;
+        }
+        int end=start+10;
         if (end>total){
-            end = message.getLast()-total;
+            end =total;
         }
         List<Message> newsList01=newsList.subList(start, end);
-//        System.out.println(message.getStart()+"asda"+message.getLast());
+        for(int i = 0; i < newsList01.size(); i ++) {
+            Message message1 = newsList01.get(i);
+            newsList01.remove(i);
+            message1.setTotal(total);
+            newsList01.add(message1);
+        }
         System.out.println(newsList01);
         return newsList01;
     }
+
     /**
      * 进入首页直接获取
      * 首页加载数据
