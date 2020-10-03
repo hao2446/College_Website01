@@ -54,17 +54,19 @@ public class MessageController {
 
     /**
      * 查询上一条新闻
-     * @param messageid
+     * @param message
      * @return
      */
     @ResponseBody
-    @RequestMapping("/lastMessage")
-    public ResponseMessage getLastMessage(@RequestParam("messageid")Integer messageid){
-        ResponseMessage<Integer> responseMessage=new ResponseMessage<>();
-        int message=messageServiceImpl.getLastMessage(messageid);
-        if (message!=-1){
+    @RequestMapping(value = "/lastMessage",method = RequestMethod.POST)
+    public ResponseMessage getLastMessage(@RequestBody  Message message){
+        ResponseMessage<Message> responseMessage=new ResponseMessage<>();
+        int messageid=messageServiceImpl.getLastMessage(message);
+
+        if (messageid!=-1){
+            Message message1=messageServiceImpl.getMessageContent(messageid);
             responseMessage.setCode(200);
-            responseMessage.setData(message);
+            responseMessage.setData(message1);
             responseMessage.setMsg("查询成功");
         }else {
             responseMessage.setCode(1000);
@@ -75,17 +77,19 @@ public class MessageController {
 
     /**
      * 返回下一条新闻
-     * @param messageid
+     * @param message
      * @return
      */
     @ResponseBody
-    @RequestMapping("/nextMessage")
-    public ResponseMessage getNextMessage(@RequestParam("messageid") Integer messageid){
-        ResponseMessage<Integer> responseMessage=new ResponseMessage<>();
-        int message=messageServiceImpl.getNextMessage(messageid);
-        if (message!=-1){
+    @RequestMapping(value = "/nextMessage",method = RequestMethod.POST)
+    public ResponseMessage getNextMessage(@RequestBody Message message){
+        ResponseMessage<Message> responseMessage=new ResponseMessage<>();
+        int messageid=messageServiceImpl.getNextMessage(message);
+
+        if (messageid!=-1){
+            Message message1=messageServiceImpl.getMessageContent(messageid);
             responseMessage.setCode(200);
-            responseMessage.setData(message);
+            responseMessage.setData(message1);
             responseMessage.setMsg("查询成功");
         }else {
             responseMessage.setCode(1000);
@@ -102,6 +106,7 @@ public class MessageController {
     @ResponseBody
     @RequestMapping("/getNews")
     public List<Message> getMessages(@RequestParam("messagetype") String messagetype){
+        System.out.println(messagetype);
         Message message=new Message();
         //message.setMessagetype();
         message.setMessagetype(messagetype);

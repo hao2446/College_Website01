@@ -18,14 +18,14 @@ public class MessageDaoImpl extends BaseDaoImpl<Message, Integer>implements Mess
 
     /**
      * 返回上一条新闻
-     * @param messageid
+     * @param message
      * @return
      */
-    public List<Integer> getLastMessage(Integer messageid){
+    public List<Integer> getLastMessage(Message message){
         List<Integer> messageidList=null;
         try{
-            if (messageid!=null){
-                messageidList=sqlSessionTemplate.selectList("selectLastMessage",messageid);
+            if (message!=null){
+                messageidList=sqlSessionTemplate.selectList("selectLastMessage",message);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -35,14 +35,14 @@ public class MessageDaoImpl extends BaseDaoImpl<Message, Integer>implements Mess
 
     /**
      * 返回下一条新闻
-     * @param messageid
+     * @param message
      * @return
      */
-    public List<Integer> getNextMessage(Integer messageid){
+    public List<Integer> getNextMessage(Message message){
         List<Integer> messageidList=null;
         try{
-            if (messageid!=null){
-                messageidList=sqlSessionTemplate.selectList("selectNextMessage",messageid);
+            if (message!=null){
+                messageidList=sqlSessionTemplate.selectList("selectNextMessage",message);
             }
         }catch (Exception e){
             e.printStackTrace();

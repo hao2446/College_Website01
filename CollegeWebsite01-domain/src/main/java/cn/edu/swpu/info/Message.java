@@ -26,6 +26,7 @@ public class Message {
     private Integer status;
     private Integer clickrate;
 
+
     public Integer getClickrate() {
         return clickrate;
     }

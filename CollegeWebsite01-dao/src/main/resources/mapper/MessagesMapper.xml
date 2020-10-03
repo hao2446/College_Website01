@@ -50,7 +50,7 @@
     ,
     <include refid="Blob_Column_List" />
     from message
-    where messageId = #{messageId,jdbcType=INTEGER}
+    where messageId = #{messageid,jdbcType=INTEGER}
   </select>
 
     <!--进行新闻类型查询-->
@@ -69,12 +69,12 @@
     select MAX(messageId) from message
   </select>
     <!--查询上一条新闻-->
-    <select id="selectLastMessage" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select  messageId from message where messageId &lt; #{messageid,jdbcType=INTEGER} order by messageId DESC
+    <select id="selectLastMessage" parameterType="cn.edu.swpu.info.Message" resultType="java.lang.Integer">
+        select  messageId from message where messageId &lt; #{messageid,jdbcType=INTEGER} and  messageType=#{messagetype,jdbcType=VARCHAR} order by messageId DESC
     </select>
     <!--查询下一条新闻-->
-    <select id="selectNextMessage" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select   messageId from message where messageId &gt; #{messageid,jdbcType=INTEGER}
+    <select id="selectNextMessage" parameterType="cn.edu.swpu.info.Message" resultType="java.lang.Integer">
+        select   messageId from message where messageId &gt; #{messageid,jdbcType=INTEGER} and messageType=#{messagetype,jdbcType=VARCHAR}
     </select>
     <!--删除-->
     <!--根据主键数组进行删除-->
@@ -117,7 +117,7 @@
       <if test="author!=null">
           author,
       </if>
-      <if test="clickRate !=null">
+      <if test="clickrate !=null">
           clickRate,
       </if>
     </trim>

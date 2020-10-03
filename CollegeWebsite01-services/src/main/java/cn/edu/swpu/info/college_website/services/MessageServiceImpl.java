@@ -24,27 +24,36 @@ public class MessageServiceImpl {
 
     /**
      * 查询上一条新闻
-     * @param messageid
+     * @param message
      * @return
      */
-    public int  getLastMessage(Integer messageid){
+    public int  getLastMessage(Message message){
         List<Integer> messageidList=new ArrayList<>();
         //PageHelper.startPage(1,1);
-        messageidList=messageDaoImpl.getLastMessage(messageid);
+        messageidList=messageDaoImpl.getLastMessage(message);
         //PageInfo pageInfo=new PageInfo(messageidList);
         //System.out.println(pageInfo);
-        return messageidList.get(0);
+        if (messageidList.size()!=0){
+            return messageidList.get(0);
+        }else {
+            return 0;
+        }
+
     }
 
     /**
      * 返回下一条新闻
-     * @param messageid
+     * @param message
      * @return
      */
-    public int getNextMessage(Integer messageid){
+    public int getNextMessage(Message  message){
         List<Integer> messageidList=new ArrayList<>();
-        messageidList=messageDaoImpl.getNextMessage(messageid);
-        return messageidList.get(0);
+        messageidList=messageDaoImpl.getNextMessage(message);
+        if (messageidList.size()!=0){
+            return messageidList.get(0);
+        }else {
+            return 0;
+        }
     }
 
 
