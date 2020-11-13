@@ -3,6 +3,7 @@ package cn.edu.swpu.info.college_website.Realm;
 import cn.edu.swpu.info.Permission;
 import cn.edu.swpu.info.admin;
 import cn.edu.swpu.info.college_website.services.PermissionsServiceImpl;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -50,6 +51,12 @@ public class firstRealm extends AuthorizingRealm {
         System.out.println(realName);
         SimpleAuthenticationInfo info=null;
         info=new SimpleAuthenticationInfo(principal,credentials,credentialsSalt,realName);
+        System.out.println("皮"+info);
+        //System.out.println(SecurityUtils.getSubject().getPrincipal());
+        info.getCredentials();
+        System.out.println(info.getCredentials());
+        System.out.println(info.getCredentialsSalt());
+        System.out.println(info.getPrincipals());
         return info;
     }
     //实现授权

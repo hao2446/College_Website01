@@ -5,18 +5,25 @@ import cn.edu.swpu.info.ResponseMessage;
 import cn.edu.swpu.info.admin;
 import cn.edu.swpu.info.college_website.services.AdminServiceImpl;
 
+import cn.edu.swpu.info.college_website.services.ShiroServiceImpl;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/Admin")
 @Controller
 public class AdminController {
     @Autowired
     AdminServiceImpl adminServiceImpl;
-
+    @Autowired
+    ShiroServiceImpl shiroServiceImpl;
     /**
      * 根据前端传入的账户名
      * 根据usrename进行查找
@@ -24,26 +31,53 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping(value="/login",method = RequestMethod.POST)
-    public ResponseMessage getAdmin(@RequestBody admin admin){
-        System.out.println(admin.toString());
-        admin admin1= adminServiceImpl.getAdminContent(admin.getLoginName());
-        System.out.println(admin1);
-        ResponseMessage<String> responseMessage=new ResponseMessage<>();
-        if (admin1==null){
-            responseMessage.setMsg("登录失败");
-            return responseMessage;
-        }
-        if (admin1.getAdminPassword().equals(admin1.getAdminPassword()))
-        {
+    public ResponseMessage getAdmin(@RequestBody admin admin1){
+           ResponseMessage<Map<String, Object>> responseMessage=new ResponseMessage<>();
+        admin user = shiroServiceImpl.findByUsername(admin1.getLoginName());
+        //账号不存在、密码错误
+        if (user == null || !user.getAdminPassword().equals(admin1.getAdminPassword())) {
+            responseMessage.setCode(400);
+            responseMessage.setMsg("账号或密码有误");
+        } else {
+            //生成token，并保存到数据库
+            responseMessage.setData(shiroServiceImpl.createToken(user.getAdminId()));
             responseMessage.setCode(200);
-            responseMessage.setMsg("登录成功");
-        }else
-            {
-                responseMessage.setMsg("账户名或密码错误");
-                responseMessage.setCode(1000);
-            }
-
+            responseMessage.setMsg("登陆成功");
+        }
+        System.out.println(user.toString());
         return responseMessage;
+//        Subject currentuser= SecurityUtils.getSubject();
+//        if (!currentuser.isAuthenticated()){
+//            UsernamePasswordToken token=new UsernamePasswordToken(admin.getLoginName(),admin.getAdminPassword());
+//            token.setRememberMe(true);
+//            try {
+//                currentuser.login(token);
+//                responseMessage.setMsg("登录成功");
+//                responseMessage.setCode(200);
+//            }catch (AuthenticationException ae){
+//                responseMessage.setMsg("登录失败");
+//                responseMessage.setCode(1000);
+//                System.out.println("登录失败"+ae.getMessage());
+//            }
+//        }
+
+//        admin admin1= adminServiceImpl.getAdminContent(admin.getLoginName());
+//        System.out.println(admin1);
+
+//        if (admin1==null){
+//            responseMessage.setMsg("登录失败");
+//            return responseMessage;
+//        }
+//        if (admin1.getAdminPassword().equals(admin1.getAdminPassword()))
+//        {
+//            responseMessage.setCode(200);
+//            responseMessage.setMsg("登录成功");
+//        }else
+//            {
+//                responseMessage.setMsg("账户名或密码错误");
+//                responseMessage.setCode(1000);
+//            }
+
     }
     @ResponseBody
     @RequestMapping(value="/getAllAdmin",method = RequestMethod.POST)
@@ -67,6 +101,9 @@ public class AdminController {
     @RequestMapping(value = "/registerUser",method = RequestMethod.POST)
     @ResponseBody
     public ResponseMessage<String> registerUser(@RequestBody admin admin)   {
+//        admin admin=new admin();
+//        admin.setLoginName(loginName);
+//        admin.setAdminPassword(AdminPassword);
         System.out.println(admin);
 //        System.out.println(password+loginName);
 //       admin admin=new admin();

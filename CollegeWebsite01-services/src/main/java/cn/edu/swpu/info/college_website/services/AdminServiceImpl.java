@@ -2,6 +2,7 @@ package cn.edu.swpu.info.college_website.services;
 
 import cn.edu.swpu.info.Message;
 import cn.edu.swpu.info.admin;
+import cn.edu.swpu.info.college_website.common.MD5util;
 import cn.edu.swpu.info.college_website.dao.Impl.AdminDaoImpl;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,13 @@ public class AdminServiceImpl {
     public String registerUser(admin admin){
         String msg=null;
         admin.setAdminId(getMaxId()+1);
-//        System.out.println(admin.getAdminId()+"成功获取到了最大的id");
+        //将用户密码进行加密存储
+        if (admin.getAdminPassword()!=null){
+            String password=(String) MD5util.stringMD5(admin.getLoginName(),(Object) admin.getAdminPassword());
+            admin.setAdminPassword(password);
+            System.out.println(admin.getAdminPassword());
+        }
+        System.out.println(admin.getAdminId()+"成功获取到了最大的id");
         if (adminDaoImpl.insertObject(admin)==1){
             msg="注册成功";
         }else {

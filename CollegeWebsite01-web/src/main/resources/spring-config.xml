@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <import resource="classpath*:spring-config-dao.xml"/>
     <import resource="classpath:spring-config-mvc.xml"/>
@@ -19,16 +19,24 @@
         <property name="cacheManagerConfigFile" value="classpath:encache.xml"></property>
     </bean>
 
+    <!--<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />-->
+    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"-->
+          <!--depends-on="lifecycleBeanPostProcessor">-->
+        <!--<property name="proxyTargetClass" value="true"/>-->
+    <!--</bean> &lt;!&ndash;此处的depends-on与上面的LifecycleBeanPostProcessor配置的id保持一致&ndash;&gt;-->
+    <!--<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">-->
+        <!--<property name="securityManager" ref="securityManager"/>-->
+    <!--</bean>-->
     <!-- 配置自己域realm实现  -->
-    <bean id="shiroRealm" class="cn.edu.swpu.info.college_website.Realm.firstRealm">
+    <bean id="shiroRealm" class="cn.edu.swpu.info.college_website.Realm.AuthRealm">
         <!--实现MD5加密-->
-        <property name="credentialsMatcher">
-            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                <property name="hashAlgorithmName" value="MD5"></property>
-                <!--加密次数-->
-                <property name="hashIterations" value="1024"></property>
-            </bean>
-        </property>
+        <!--<property name="credentialsMatcher">-->
+            <!--<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">-->
+                <!--<property name="hashAlgorithmName" value="MD5"></property>-->
+                <!--&lt;!&ndash;加密次数&ndash;&gt;-->
+                <!--<property name="hashIterations" value="1024"></property>-->
+            <!--</bean>-->
+        <!--</property>-->
     </bean>
 
     <!-- 配置shiro的一些拦截规则，id必须和web.xml中的 shiro 拦截器名一致 -->
@@ -46,11 +54,25 @@
             <value>
                 <!-- 注意：规则是有顺序的，从上到下，拦截范围必须是从小到大的 -->
                 <!--  url = 拦截规则（anon为匿名，authc为要登录后，才能访问，logout登出过滤） -->
+                <!--图片资源的拦截-->
+                /Img/identifyCode/img=anon
+                /Img/logins=anon
+                /Img/**=roles[admin]
+                <!--新闻资源的拦截-->
+                /message/insertMessage=roles[admin]
+                /message/uploadImg=roles[admin]
+                /message/deleteMessage=roles[admin]
+                /message/updateMessage=roles[admin]
+                <!--超级管理员的权限拦截-->
+                /Admin/getAllAdmin=roles[sysadmin]
+                /Admin/modifyRight=roles[sysadmin]
                 /Login.jsp = anon
                 /logout = logout
-                /add.jsp=roles[user]
-                /get.jsp=roles[admin]
-                /admin/** = authc
+                /add.jsp=authc
+                <!--/CollegeNews=authc-->
+                <!--/AdminPage.vue=authc-->
+                /get.jsp=anon
+                <!--/Admin/login=anon-->
                 /**= anon
             </value>
         </property>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.swpu.info.college_website.dao.Impl.SysTokenRepositoryImpl">
+
+    <select id="selectByToken" parameterType="java.lang.String" resultType="cn.edu.swpu.info.SysToken">
+        select * from systoken where token=#{token}
+    </select>
+
+    <select id="selectByByUserId" parameterType="java.lang.Integer" resultType="cn.edu.swpu.info.SysToken">
+        select * from systoken where userId=#{userId}
+    </select>
+
+    <insert id="saveToken" parameterType="cn.edu.swpu.info.SysToken" >
+        insert into systoken values (#{userId},#{token},#{expireTime,jdbcType=DATE},#{updateTime,jdbcType=DATE})
+    </insert>
+</mapper>

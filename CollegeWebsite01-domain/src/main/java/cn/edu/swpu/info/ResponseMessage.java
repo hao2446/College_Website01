@@ -1,9 +1,20 @@
 package cn.edu.swpu.info;
 
+import org.apache.shiro.authc.UsernamePasswordToken;
+
 public class ResponseMessage<T> {
     private int code;
     private T data;
     private String msg;
+    private UsernamePasswordToken token;
+
+    public UsernamePasswordToken getToken() {
+        return token;
+    }
+
+    public void setToken(UsernamePasswordToken token) {
+        this.token = token;
+    }
 
     public int getCode() {
         return code;

@@ -51,11 +51,18 @@ public class MD5util {
 //            System.out.println("未通过");
 //        }
 //    }
-    public static  Object stringMD5(Object credentials){
+    public static  String stringMD5(String loginName,Object credentials){
         String hashAlgorithmName = "MD5";
-        Object salt= ByteSource.Util.bytes("201831771313");
+        Object salt= ByteSource.Util.bytes(loginName);
         int hashIterations=1024;
         Object result=new SimpleHash(hashAlgorithmName,credentials,salt,hashIterations);
-        return  result;
+        return   String.valueOf(result);
+    }
+    public static  String cheackToken(String loginName){
+        String hashAlgorithmName="MD5";
+        Object salt=null;
+        int hashIterations=1024;
+        Object result=new SimpleHash(hashAlgorithmName,loginName,salt,hashIterations);
+        return String.valueOf(result);
     }
 }

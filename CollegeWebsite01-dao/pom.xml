@@ -51,6 +51,11 @@
             <artifactId>College-Website01-domain</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>cn.edu.swpu.info</groupId>-->
+            <!--<artifactId>College-Website01-web</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>cn.edu.swpu.info</groupId>
             <artifactId>College-Website01-common</artifactId>
@@ -64,7 +69,11 @@
             <version>0.9.5.2</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-typehandlers-jsr310</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
 
 </project>
